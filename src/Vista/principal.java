@@ -5,6 +5,9 @@
  */
 package Vista;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author juanch0x
@@ -134,7 +137,11 @@ public class principal extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
 
-        crearproducto = new CrearProducto();
+        try {
+            crearproducto = new CrearProducto();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         this.getContentPane().add(escritorio);
         
