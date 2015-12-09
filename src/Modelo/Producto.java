@@ -13,7 +13,9 @@ public class Producto {
     
 private long codigo;
 private String nombre;
-private float precio;
+private float precio_v;
+private float precio_c;
+private int id_producto;
 private int cantidad;
 private int id_categoria;
 
@@ -33,12 +35,28 @@ private int id_categoria;
         this.nombre = nombre;
     }
 
-    public float getPrecio() {
-        return precio;
+    public float getPrecio_v() {
+        return precio_v;
     }
 
-    public void setPrecio(float precio) {
-        this.precio = precio;
+    public void setPrecio_v(float precio_v) {
+        this.precio_v = precio_v;
+    }
+
+    public float getPrecio_c() {
+        return precio_c;
+    }
+
+    public void setPrecio_c(float precio_c) {
+        this.precio_c = precio_c;
+    }
+
+    public int getId_producto() {
+        return id_producto;
+    }
+
+    public void setId_producto(int id_producto) {
+        this.id_producto = id_producto;
     }
 
     public int getCantidad() {
@@ -56,5 +74,6 @@ private int id_categoria;
     public void setId_categoria(int id_categoria) {
         this.id_categoria = id_categoria;
     }
-    
+
+
 }

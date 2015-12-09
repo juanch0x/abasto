@@ -71,4 +71,31 @@ public List <Categoria> obtenerCategorias() throws ClassNotFoundException{
         }
         return categoria;
     }
+
+      public List <Categoria> buscarCategoria() throws ClassNotFoundException{
+       
+    List<Categoria> categorias = new ArrayList<Categoria>();
+
+        try {
+            Conexion e=new Conexion();
+            conn=e.conectado();
+            
+            String query="SELECT * FROM categoria";
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                
+                Categoria categoria = new Categoria();
+                categoria.setCategoria(rs.getString("categoria"));
+                categoria.setId_categoria(Integer.parseInt(rs.getString("id_categoria")));
+                categorias.add(categoria);
+            }
+            
+        } catch (SQLException ex) {}
+        return categorias;
+    } 
+
+
+
 }

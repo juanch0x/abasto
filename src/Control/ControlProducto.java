@@ -30,7 +30,7 @@ public class ControlProducto {
         ps = conn.prepareStatement(sql);
         ps.setLong(1, producto.getCodigo() );
         ps.setString(2, producto.getNombre());
-        ps.setFloat(3, producto.getPrecio());
+      //  ps.setFloat(3, producto.getPrecio());
         ps.setInt(4, producto.getCantidad());
         ps.setInt(5, producto.getId_categoria());
         ps.executeUpdate();
@@ -48,7 +48,7 @@ public class ControlProducto {
             ps = conn.prepareStatement(query);
             ps.setLong(1, producto.getCodigo() );
             ps.setString(2, producto.getNombre());
-            ps.setFloat(3, producto.getPrecio());
+          //  ps.setFloat(3, producto.getPrecio());
             ps.setInt(4, producto.getCantidad());
             ps.setInt(5, producto.getId_categoria());
             ps.executeUpdate();
@@ -73,8 +73,28 @@ public void EliminarProducto(Long codigo) throws SQLException{
     }catch (SQLException ex) {
             ex.printStackTrace();
         }
+}
+
+public void CrearProducto (Producto producto) throws SQLException{
+    
+        Conexion e=new Conexion();
+        conn = e.conectado();
+        
+          
+        
+        String sql="insert into producto (codigo,nombre,precio,id_categoria) values(?,?,?,?,?)";
+        ps = conn.prepareStatement(sql);
+        ps.setLong(1, producto.getCodigo() );
+        ps.setString(2, producto.getNombre());
+  //      ps.setFloat(3, producto.getPrecio());
+        ps.setInt(4, producto.getCantidad());
+        ps.setInt(5, producto.getId_categoria());
+        ps.executeUpdate();
+             
+        }  
+
 } 
           
           
           
-}
+
