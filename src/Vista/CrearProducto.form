@@ -99,10 +99,11 @@
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="categoria_combo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="10" max="32767" attributes="0"/>
+                  <EmptySpace pref="27" max="32767" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="boton_agregar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -119,8 +120,14 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="nombre_jfield">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Tooltip"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="codigo_jfield">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="codigo_jfieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
@@ -141,6 +148,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="preciov_jfield">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="preciov_jfieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -148,6 +158,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="precioc_jfield">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="precioc_jfieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>

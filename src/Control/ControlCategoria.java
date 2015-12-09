@@ -94,7 +94,28 @@ public List <Categoria> obtenerCategorias() throws ClassNotFoundException{
             
         } catch (SQLException ex) {}
         return categorias;
-    } 
+    }
+      
+      public Categoria busqueda(String categoria) throws SQLException{
+      
+          Categoria c=new Categoria();
+          
+          Conexion e=new Conexion();
+          
+          conn = e.conectado();
+          
+           String query="SELECT * FROM categoria WHERE categoria = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, categoria);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+            c.setCategoria(rs.getString("categoria"));
+            c.setId_categoria(Integer.parseInt(rs.getString("id_categoria")));
+            }
+          
+          return c;
+      }
 
 
 

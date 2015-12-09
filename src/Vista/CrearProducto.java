@@ -7,10 +7,13 @@ package Vista;
 import Control.ControlCategoria;
 import Modelo.Categoria;
 import Modelo.Producto;
+import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,7 +27,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
     public CrearProducto() throws ClassNotFoundException {
         initComponents();
         
-        
+               
          List <Categoria> lista = new ArrayList();
         ControlCategoria controlcategoria = new ControlCategoria();
         lista = controlcategoria.buscarCategoria();
@@ -65,6 +68,14 @@ public class CrearProducto extends javax.swing.JInternalFrame {
 
         codigo_label.setText("Codigo de Barras");
 
+        nombre_jfield.setToolTipText("Tooltip");
+
+        codigo_jfield.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                codigo_jfieldKeyTyped(evt);
+            }
+        });
+
         jLabel1.setText("Si el producto a agregar no contiene codigo de barras, se deberá dejar en blanco");
 
         boton_agregar.setText("Agregar");
@@ -76,7 +87,19 @@ public class CrearProducto extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Precio Venta");
 
+        preciov_jfield.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                preciov_jfieldKeyTyped(evt);
+            }
+        });
+
         jLabel3.setText("Precio de Costo");
+
+        precioc_jfield.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precioc_jfieldKeyTyped(evt);
+            }
+        });
 
         jLabel4.setText("Categoria");
 
@@ -132,10 +155,11 @@ public class CrearProducto extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(categoria_combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(boton_agregar))
+                .addComponent(boton_agregar)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -154,6 +178,16 @@ public class CrearProducto extends javax.swing.JInternalFrame {
 
     private void boton_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_agregarActionPerformed
 
+    //Se valida que no halla ningun campo vacio    
+        
+    if(preciov_jfield.getText().trim().isEmpty()||precioc_jfield.getText().trim().isEmpty()||nombre_jfield.getText().trim().isEmpty()||codigo_jfield.getText().trim().isEmpty()){
+               JOptionPane.showMessageDialog(this, "Hay algun campo vacio, Todos son obligatorios.");
+     }
+       
+    //Empieza la ejecución normal
+    
+               else{
+        
        Producto p = new Producto();
        
      
@@ -167,22 +201,63 @@ public class CrearProducto extends javax.swing.JInternalFrame {
       
           p.setCodigo(Long.parseLong(codigo_jfield.getText()));
           
-      }
+      }    
       
-      //System.out.println(categoria_combo.getSelectedIndex()+1);
+    // Busco el id categoría y lo seteo al objeto
+        
+        Categoria categoria= new Categoria();
+        ControlCategoria c = new ControlCategoria();
+              
+        
+        try {
+            categoria=c.busqueda(String.valueOf(categoria_combo.getSelectedItem()));
+            // a.setCategoria(String.valueOf(categoria_combo.getSelectedItem()));
+        } catch (SQLException ex) {
+            Logger.getLogger(CrearProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        p.setId_categoria(categoria.getId_categoria());
+        
+        }
       
-      
-        
-        Categoria a= new Categoria();
-        
-        a.setCategoria(String.valueOf(categoria_combo.getSelectedItem()));
-        a.setId_categoria(categoria_combo.getSelectedIndex()+1);
-        
-        System.out.println(a.getCategoria());
-        System.out.println(a.getId_categoria());
+    
        
         
     }//GEN-LAST:event_boton_agregarActionPerformed
+
+    private void preciov_jfieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_preciov_jfieldKeyTyped
+ 
+        //Validación sólo decimales
+        
+        char caracter = evt.getKeyChar();
+                if(((caracter < '0') || (caracter > '9')) && (caracter != KeyEvent.VK_BACK_SPACE)
+                                && (caracter !='.')){
+ 
+                evt.consume();
+                }
+    }//GEN-LAST:event_preciov_jfieldKeyTyped
+
+    private void precioc_jfieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioc_jfieldKeyTyped
+
+         //Validación sólo decimales
+        
+        char caracter = evt.getKeyChar();
+                if(((caracter < '0') || (caracter > '9')) && (caracter != KeyEvent.VK_BACK_SPACE)
+                                && (caracter !='.')){
+ 
+                evt.consume();
+                }
+    }//GEN-LAST:event_precioc_jfieldKeyTyped
+
+    private void codigo_jfieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo_jfieldKeyTyped
+ //Validación sólo decimales
+        
+        char caracter = evt.getKeyChar();
+                if(((caracter < '0') || (caracter > '9')) && (caracter != KeyEvent.VK_BACK_SPACE)){
+ 
+                evt.consume();
+                }
+    }//GEN-LAST:event_codigo_jfieldKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
