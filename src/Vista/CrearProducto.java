@@ -5,6 +5,7 @@
  */
 package Vista;
 import Control.ControlCategoria;
+import Control.ControlProducto;
 import Modelo.Categoria;
 import Modelo.Producto;
 import java.awt.event.KeyEvent;
@@ -130,7 +131,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
                             .addComponent(codigo_jfield)
                             .addComponent(precioc_jfield)
                             .addComponent(categoria_combo, 0, 179, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +156,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(categoria_combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(boton_agregar)
@@ -170,7 +171,9 @@ public class CrearProducto extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -190,7 +193,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
         
        Producto p = new Producto();
        
-     
+      p.setNombre(nombre_jfield.getText());
       p.setPrecio_c(Float.parseFloat(precioc_jfield.getText()));
       p.setPrecio_v(Float.parseFloat(preciov_jfield.getText()));
       
@@ -216,8 +219,23 @@ public class CrearProducto extends javax.swing.JInternalFrame {
             Logger.getLogger(CrearProducto.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        
         p.setId_categoria(categoria.getId_categoria());
         
+       ControlProducto e = new ControlProducto();
+        try {
+            e.CrearProducto(p);
+        } catch (SQLException ex) {
+            Logger.getLogger(CrearProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Vaciando los campos después de agregar el producto
+        
+        nombre_jfield.setText("");
+        precioc_jfield.setText("");
+        preciov_jfield.setText("");
+        codigo_jfield.setText("");
+       
         }
       
     

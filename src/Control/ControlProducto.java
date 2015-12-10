@@ -80,16 +80,18 @@ public void CrearProducto (Producto producto) throws SQLException{
         Conexion e=new Conexion();
         conn = e.conectado();
         
-          
+          System.out.println(producto.getNombre());
         
-        String sql="insert into producto (codigo,nombre,precio,id_categoria) values(?,?,?,?,?)";
+        String sql="insert into producto (codigo,nombre,precio,precio_compra,id_categoria) values(?,?,?,?,?)";
         ps = conn.prepareStatement(sql);
         ps.setLong(1, producto.getCodigo() );
         ps.setString(2, producto.getNombre());
-  //      ps.setFloat(3, producto.getPrecio());
-        ps.setInt(4, producto.getCantidad());
+        ps.setFloat(3, producto.getPrecio_v());
+        ps.setFloat(4, producto.getPrecio_c());
         ps.setInt(5, producto.getId_categoria());
         ps.executeUpdate();
+        
+        
              
         }  
 
