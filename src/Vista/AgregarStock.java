@@ -257,8 +257,11 @@ public class AgregarStock extends javax.swing.JInternalFrame {
            //Ejecución normal
                
                
-          //Calculo la nueva cantidad de stock disponible para la actualización         
-          cantidad = Integer.parseInt(tabla.getValueAt(a, 4).toString() + Integer.parseInt(stock_field.getText()));
+          //Calculo la nueva cantidad de stock disponible para la actualización
+               int aux,aux2;
+               aux = Integer.parseInt(tabla.getValueAt(a, 4).toString());
+               aux2 = Integer.parseInt(stock_field.getText());
+               cantidad = aux+aux2;
           
           
 
@@ -336,10 +339,10 @@ public DefaultTableModel obtenerProductos() {
 public void filtro() {
         int columnaABuscar = 0;
         if (comboFiltro.getSelectedItem() == "Codigo") {
-            columnaABuscar = 0;
+            columnaABuscar = 1;
         }
         if (comboFiltro.getSelectedItem().toString() == "Nombre") {
-            columnaABuscar = 1;
+            columnaABuscar = 0;
         }
        
         trsFiltro.setRowFilter(RowFilter.regexFilter(filtro_field.getText(), columnaABuscar));

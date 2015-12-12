@@ -174,7 +174,7 @@ public void AgregarStock (int cantidad, Long codigo, String lote, Date fecha) th
         ps.setLong(2, codigo);
         System.out.println(cantidad);
         System.out.println(codigo);
-      
+    
         ps.executeUpdate();
         
         String sql_lote="insert into lote (lote,codigo,vencimiento) values(?,?,?)";
