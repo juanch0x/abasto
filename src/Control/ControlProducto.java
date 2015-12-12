@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -154,23 +155,35 @@ public List <Producto> obtenerProductos() throws ClassNotFoundException{
         return productos;
     }
 
-public void AgregarStock (Producto producto) throws SQLException{
+public void AgregarStock (int cantidad, Long codigo, String lote, Date fecha) throws SQLException{
+    
+    /*Convirtiendo fecha*/
+    
+              
+    java.sql.Date fecha_sql = new java.sql.Date(fecha.getTime());
+   
     
         Conexion e=new Conexion();
         conn = e.conectado();
         
+      //Actualizando el Stock
         
-        String sql="UPDATE producto SET ";
+        String sql="UPDATE producto SET cantidad=? WHERE codigo=?";
         ps = conn.prepareStatement(sql);
-        ps.setLong(1, producto.getCodigo() );
-        ps.setString(2, producto.getNombre());
-        ps.setFloat(3, producto.getPrecio_v());
-        ps.setFloat(4, producto.getPrecio_c());
-        ps.setInt(5, producto.getId_categoria());
+        ps.setInt(1, cantidad);
+        ps.setLong(2, codigo);
+        System.out.println(cantidad);
+        System.out.println(codigo);
+      
         ps.executeUpdate();
         
+        String sql_lote="insert into lote (lote,codigo,vencimiento) values(?,?,?)";
+        ps = conn.prepareStatement(sql_lote);
+        ps.setString(1, lote);
+        ps.setLong(2, codigo);
+        ps.setDate(3, fecha_sql);
         
-             
+        ps.executeUpdate();
         }
 
 

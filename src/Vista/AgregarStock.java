@@ -9,6 +9,7 @@ import Control.ControlProducto;
 import Modelo.Producto;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +63,7 @@ public class AgregarStock extends javax.swing.JInternalFrame {
         lote_field = new javax.swing.JTextField();
         agregar_boton = new javax.swing.JButton();
         fecha = new com.toedter.calendar.JDateChooser();
+        jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
         setTitle("Carga de Stock");
@@ -107,6 +109,8 @@ public class AgregarStock extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setText("Vencimiento");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -120,22 +124,26 @@ public class AgregarStock extends javax.swing.JInternalFrame {
                         .addComponent(filtro_field, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(stock_label)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(stock_label)
+                                    .addComponent(jLabel1))
                                 .addGap(18, 18, 18)
-                                .addComponent(stock_field, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34)
-                                .addComponent(lote_label)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lote_field, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(stock_field, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                                        .addComponent(lote_label)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lote_field, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(132, 132, 132))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(agregar_boton)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,25 +153,28 @@ public class AgregarStock extends javax.swing.JInternalFrame {
                     .addComponent(comboFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(filtro_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(stock_label)
-                        .addComponent(stock_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lote_label)
-                        .addComponent(lote_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(stock_label)
+                            .addComponent(stock_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lote_label)
+                            .addComponent(lote_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addComponent(agregar_boton)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +204,7 @@ public class AgregarStock extends javax.swing.JInternalFrame {
 
         
       DefaultTableModel model = (DefaultTableModel) tabla.getModel(); 
-         
+      ControlProducto c = new ControlProducto();  
                  
           int a = tabla.getSelectedRow(); 
          
@@ -214,20 +225,59 @@ public class AgregarStock extends javax.swing.JInternalFrame {
            //Sección 5 
             
  if(JOptionPane.OK_OPTION==confirmar) {
-
+   
           int cantidad;
+          long codigo;
           
+          //Declaro dos objetos de tipo util date para comparar y validar que no sea una fecha pasada
+          java.util.Date fechaVto = new Date();
+          java.util.Date fechaActual = new Date();
+           
           
+          //Valido campos vacios..
+           if(stock_field.getText().trim().isEmpty()||lote_field.getText().trim().isEmpty()){
+           JOptionPane.showMessageDialog(this, "Hay algun campo vacio");
+           }
+           if(fecha.getDate() == null){
+           JOptionPane.showMessageDialog(this, "Es obligatorio definir la fecha de vencimiento");
+           }
+          
+           else{
+            
+           //Convierto la fecha del jcalendar en un objeto date    
+           fechaVto = fecha.getDate();
+           
+           //Valido que la fecha no halla pasado
+           
+           if(fechaActual.compareTo(fechaVto)!=-1){
+           JOptionPane.showMessageDialog(this, "Esa fecha ya paso!");
+           }
+           
+           else{
+           //Ejecución normal
+               
+               
+          //Calculo la nueva cantidad de stock disponible para la actualización         
           cantidad = Integer.parseInt(tabla.getValueAt(a, 4).toString() + Integer.parseInt(stock_field.getText()));
           
           
-          
-           SimpleDateFormat formateo = new SimpleDateFormat("dd/MM/yyyy HH:MM:SS");
-           System.out.println(formateo.format(fecha.getDate()));
+
            
-                   
+           
+           codigo = Long.parseLong(tabla.getValueAt(a, 1).toString());
+           
+           
+           
+                try {
+                    c.AgregarStock(cantidad,codigo,lote_field.getText(),fechaVto);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AgregarStock.class.getName()).log(Level.SEVERE, null, ex);
+                }
  
-            } 
+ 
+           
+ 
+ }}}
  
         }  
         
@@ -240,6 +290,7 @@ public class AgregarStock extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox comboFiltro;
     private com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JTextField filtro_field;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField lote_field;
