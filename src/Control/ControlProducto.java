@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -92,7 +94,85 @@ public void CrearProducto (Producto producto) throws SQLException{
         
         
              
-        }  
+        }
+
+
+public List <Producto> buscarProducto() throws ClassNotFoundException{
+       
+    List<Producto> productos = new ArrayList<Producto>();
+
+        try {
+            Conexion e=new Conexion();
+            conn=e.conectado();
+            
+            String query="SELECT * FROM producto";
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                
+                Producto producto = new Producto();
+                producto.setNombre(rs.getString("nombre"));
+                producto.setCodigo(Long.parseLong(rs.getString("codigo")));
+                producto.setPrecio_c(Float.parseFloat(rs.getString("precio_c")));
+                producto.setPrecio_v(Float.parseFloat(rs.getString("precio")));
+                producto.setCantidad(Integer.parseInt(rs.getString("cantidad")));
+                productos.add(producto);
+            }
+            
+        } catch (SQLException ex) {}
+        return productos;
+    }
+
+public List <Producto> obtenerProductos() throws ClassNotFoundException{
+        Conexion e=new Conexion();
+        List <Producto> productos = new ArrayList<Producto>();
+        try {
+            conn = e.conectado();
+            
+            String query="SELECT * FROM producto";
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Producto producto = new Producto();
+                
+                producto.setNombre(rs.getString("nombre"));
+                producto.setCodigo(Long.parseLong(rs.getString("codigo")));
+                producto.setPrecio_c(Float.parseFloat(rs.getString("precio_compra")));
+                producto.setPrecio_v(Float.parseFloat(rs.getString("precio")));
+                producto.setCantidad(Integer.parseInt(rs.getString("cantidad")));
+                
+               
+                
+                productos.add(producto);
+                
+            }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return productos;
+    }
+
+public void AgregarStock (Producto producto) throws SQLException{
+    
+        Conexion e=new Conexion();
+        conn = e.conectado();
+        
+        
+        String sql="UPDATE producto SET ";
+        ps = conn.prepareStatement(sql);
+        ps.setLong(1, producto.getCodigo() );
+        ps.setString(2, producto.getNombre());
+        ps.setFloat(3, producto.getPrecio_v());
+        ps.setFloat(4, producto.getPrecio_c());
+        ps.setInt(5, producto.getId_categoria());
+        ps.executeUpdate();
+        
+        
+             
+        }
+
 
 } 
           

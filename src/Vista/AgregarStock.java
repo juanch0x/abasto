@@ -5,6 +5,20 @@
  */
 package Vista;
 
+import Control.ControlProducto;
+import Modelo.Producto;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author juanch0x
@@ -14,11 +28,13 @@ public class AgregarStock extends javax.swing.JInternalFrame {
     /**
      * Creates new form AgregarProducto
      */
+    
+    private TableRowSorter trsFiltro;
+    
     public AgregarStock() {
         initComponents();
         
-        grupo_radio.add(codigo_cbox);
-        grupo_radio.add(nombre_cbox);
+       
     }
 
     /**
@@ -30,95 +46,117 @@ public class AgregarStock extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        grupo_radio = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        nombre_cbox = new javax.swing.JRadioButton();
-        codigo_cbox = new javax.swing.JRadioButton();
-        nombre_jfield = new javax.swing.JTextField();
-        codigo_jfield = new javax.swing.JTextField();
+        filtro_field = new javax.swing.JTextField();
+        comboFiltro = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable(){
+
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false; //Disallow the editing of any cell
+            }
+        };
+        stock_label = new javax.swing.JLabel();
+        stock_field = new javax.swing.JTextField();
+        lote_label = new javax.swing.JLabel();
+        lote_field = new javax.swing.JTextField();
+        agregar_boton = new javax.swing.JButton();
+        fecha = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
-        setTitle("Productos");
+        setTitle("Carga de Stock");
         setToolTipText(null);
 
         jPanel1.setToolTipText(null);
 
-        nombre_cbox.setText("Nombre");
-        nombre_cbox.setToolTipText(null);
-        nombre_cbox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                nombre_cboxItemStateChanged(evt);
-            }
-        });
-        nombre_cbox.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                nombre_cboxStateChanged(evt);
+        filtro_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                filtro_fieldKeyTyped(evt);
             }
         });
 
-        codigo_cbox.setText("Codigo de barras");
-        codigo_cbox.setToolTipText(null);
-        codigo_cbox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                codigo_cboxItemStateChanged(evt);
-            }
-        });
+        comboFiltro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Codigo", "Nombre" }));
 
-        nombre_jfield.setEnabled(false);
-
-        codigo_jfield.setEnabled(false);
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "null"
             }
-        ));
-        jTable1.setEnabled(false);
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabla.setModel(obtenerProductos());
+        jScrollPane1.setViewportView(tabla);
+
+        stock_label.setText("Ingreso  Stock");
+
+        lote_label.setText("Lote");
+
+        agregar_boton.setText("Agregar");
+        agregar_boton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregar_botonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(69, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(nombre_cbox)
-                        .addGap(116, 116, 116)
-                        .addComponent(codigo_cbox)
-                        .addGap(133, 133, 133))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(nombre_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(63, 63, 63)
-                        .addComponent(codigo_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(108, 108, 108))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(127, 127, 127)
+                        .addComponent(comboFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(filtro_field, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(stock_label)
+                                .addGap(18, 18, 18)
+                                .addComponent(stock_field, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(lote_label)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lote_field, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(agregar_boton)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nombre_cbox)
-                    .addComponent(codigo_cbox))
+                    .addComponent(comboFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(filtro_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nombre_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(codigo_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(343, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(stock_label)
+                        .addComponent(stock_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lote_label)
+                        .addComponent(lote_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46)
+                .addComponent(agregar_boton)
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -135,42 +173,125 @@ public class AgregarStock extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nombre_cboxStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_nombre_cboxStateChanged
+    private void filtro_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filtro_fieldKeyTyped
+
+         filtro_field.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                String cadena = (filtro_field.getText());
+                filtro_field.setText(cadena);
+                repaint();
+                filtro();
+            }
+        });
+        trsFiltro = new TableRowSorter(tabla.getModel());
+        tabla.setRowSorter(trsFiltro);
 
         
-        
-        
-    }//GEN-LAST:event_nombre_cboxStateChanged
+    }//GEN-LAST:event_filtro_fieldKeyTyped
 
-    private void nombre_cboxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_nombre_cboxItemStateChanged
-        nombre_jfield.setEnabled(true);
-        codigo_jfield.setEnabled(false);
-        
-        nombre_jfield.requestFocus();
-        codigo_jfield.setText("");
-        
-        
-    }//GEN-LAST:event_nombre_cboxItemStateChanged
+    private void agregar_botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregar_botonActionPerformed
 
-    private void codigo_cboxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_codigo_cboxItemStateChanged
+        
+      DefaultTableModel model = (DefaultTableModel) tabla.getModel(); 
+         
+                 
+          int a = tabla.getSelectedRow(); 
+         
+         
+          
+          if (a<0){ 
+ 
+                JOptionPane.showMessageDialog(null, 
+                "Debe seleccionar una fila de la tabla" ); 
+ 
+         }else {
 
-        codigo_jfield.setEnabled(true);
-        nombre_jfield.setEnabled(false);
+             
+           //Sección 4
+            int confirmar=JOptionPane.showConfirmDialog(null, 
+           "¿Esta seguro de agregar este lote?"); 
+ 
+           //Sección 5 
+            
+ if(JOptionPane.OK_OPTION==confirmar) {
+
+          int cantidad;
+          
+          
+          cantidad = Integer.parseInt(tabla.getValueAt(a, 4).toString() + Integer.parseInt(stock_field.getText()));
+          
+          
+          
+           SimpleDateFormat formateo = new SimpleDateFormat("dd/MM/yyyy HH:MM:SS");
+           System.out.println(formateo.format(fecha.getDate()));
+           
+                   
+ 
+            } 
+ 
+        }  
         
-        codigo_jfield.requestFocus();
-        nombre_jfield.setText("");
         
-    }//GEN-LAST:event_codigo_cboxItemStateChanged
+    }//GEN-LAST:event_agregar_botonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton codigo_cbox;
-    private javax.swing.JTextField codigo_jfield;
-    private javax.swing.ButtonGroup grupo_radio;
+    private javax.swing.JButton agregar_boton;
+    private javax.swing.JComboBox comboFiltro;
+    private com.toedter.calendar.JDateChooser fecha;
+    private javax.swing.JTextField filtro_field;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JRadioButton nombre_cbox;
-    private javax.swing.JTextField nombre_jfield;
+    private javax.swing.JTextField lote_field;
+    private javax.swing.JLabel lote_label;
+    private javax.swing.JTextField stock_field;
+    private javax.swing.JLabel stock_label;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
+
+public DefaultTableModel obtenerProductos() {
+        
+        String encabezados[]= {"Nombre","Codigo","Precio Costo","Precio Venta","Stock"};
+        ControlProducto c = new ControlProducto();
+        List<Producto> productos = null;
+        
+        try {
+            productos = c.obtenerProductos();
+             
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AgregarStock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       
+            
+        String [][] data = new String[productos.size()][5];
+        for (int i = 0; i < productos.size(); i++) {
+        
+            
+            data[i][0] = productos.get(i).getNombre();
+            data[i][1] = Long.toString(productos.get(i).getCodigo());
+            data[i][2] = Float.toString(productos.get(i).getPrecio_c());
+            data[i][3] = Float.toString(productos.get(i).getPrecio_v());
+            data[i][4] = Integer.toString(productos.get(i).getCantidad());
+                
+           
+        }
+        
+        return new DefaultTableModel(data,encabezados);
+    }
+
+//Metodo para hacer el filtro de busqueda
+
+public void filtro() {
+        int columnaABuscar = 0;
+        if (comboFiltro.getSelectedItem() == "Codigo") {
+            columnaABuscar = 0;
+        }
+        if (comboFiltro.getSelectedItem().toString() == "Nombre") {
+            columnaABuscar = 1;
+        }
+       
+        trsFiltro.setRowFilter(RowFilter.regexFilter(filtro_field.getText(), columnaABuscar));
+    }
+
 }
