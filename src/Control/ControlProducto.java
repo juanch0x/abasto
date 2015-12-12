@@ -80,7 +80,6 @@ public void CrearProducto (Producto producto) throws SQLException{
         Conexion e=new Conexion();
         conn = e.conectado();
         
-          System.out.println(producto.getNombre());
         
         String sql="insert into producto (codigo,nombre,precio,precio_compra,id_categoria) values(?,?,?,?,?)";
         ps = conn.prepareStatement(sql);

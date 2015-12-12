@@ -69,8 +69,9 @@ public class CrearProducto extends javax.swing.JInternalFrame {
 
         codigo_label.setText("Codigo de Barras");
 
-        nombre_jfield.setToolTipText("Tooltip");
+        nombre_jfield.setToolTipText("Nombre del producto");
 
+        codigo_jfield.setToolTipText("Si no posee codigo de barras dejar en blanco");
         codigo_jfield.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 codigo_jfieldKeyTyped(evt);
@@ -88,6 +89,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Precio Venta");
 
+        preciov_jfield.setToolTipText("Precio de venta unitario");
         preciov_jfield.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 preciov_jfieldKeyTyped(evt);
@@ -96,6 +98,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Precio de Costo");
 
+        precioc_jfield.setToolTipText("Precio de costo unitario");
         precioc_jfield.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 precioc_jfieldKeyTyped(evt);
@@ -120,35 +123,36 @@ public class CrearProducto extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nombre_label)
-                            .addComponent(codigo_label)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(codigo_label))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(preciov_jfield)
-                            .addComponent(nombre_jfield)
-                            .addComponent(codigo_jfield)
-                            .addComponent(precioc_jfield)
-                            .addComponent(categoria_combo, 0, 179, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(codigo_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(preciov_jfield)
+                                .addComponent(precioc_jfield)
+                                .addComponent(categoria_combo, 0, 179, Short.MAX_VALUE))
+                            .addComponent(nombre_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(48, 48, 48)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nombre_label)
-                    .addComponent(nombre_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(codigo_label)
-                    .addComponent(codigo_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(precioc_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(codigo_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(codigo_label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nombre_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombre_label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(precioc_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(preciov_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -183,10 +187,17 @@ public class CrearProducto extends javax.swing.JInternalFrame {
 
     //Se valida que no halla ningun campo vacio    
         
-    if(preciov_jfield.getText().trim().isEmpty()||precioc_jfield.getText().trim().isEmpty()||nombre_jfield.getText().trim().isEmpty()||codigo_jfield.getText().trim().isEmpty()){
-               JOptionPane.showMessageDialog(this, "Hay algun campo vacio, Todos son obligatorios.");
+    if(preciov_jfield.getText().trim().isEmpty()||precioc_jfield.getText().trim().isEmpty()||nombre_jfield.getText().trim().isEmpty()){
+               JOptionPane.showMessageDialog(this, "Hay algun campo vacio.");
      }
        
+    //Validación de precio
+    
+    if(Float.parseFloat(precioc_jfield.getText())>=Float.parseFloat(preciov_jfield.getText())){
+        JOptionPane.showMessageDialog(this, "El precio de costo debe ser menor al precio de venta.");
+     
+    }
+    
     //Empieza la ejecución normal
     
                else{
@@ -235,6 +246,8 @@ public class CrearProducto extends javax.swing.JInternalFrame {
         precioc_jfield.setText("");
         preciov_jfield.setText("");
         codigo_jfield.setText("");
+        
+        JOptionPane.showMessageDialog(this, "El producto fue creado correctamente..");
        
         }
       
@@ -269,12 +282,16 @@ public class CrearProducto extends javax.swing.JInternalFrame {
 
     private void codigo_jfieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo_jfieldKeyTyped
  //Validación sólo decimales
-        
+        int cont=0;
         char caracter = evt.getKeyChar();
                 if(((caracter < '0') || (caracter > '9')) && (caracter != KeyEvent.VK_BACK_SPACE)){
  
+                cont++;
                 evt.consume();
                 }
+                          
+       if(cont==12){nombre_jfield.requestFocus();}         
+                
     }//GEN-LAST:event_codigo_jfieldKeyTyped
 
 
