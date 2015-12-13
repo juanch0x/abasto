@@ -72,6 +72,9 @@ public class AgregarStock extends javax.swing.JInternalFrame {
         jPanel1.setToolTipText(null);
 
         filtro_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                filtro_fieldKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 filtro_fieldKeyTyped(evt);
             }
@@ -102,6 +105,7 @@ public class AgregarStock extends javax.swing.JInternalFrame {
 
         lote_label.setText("Lote");
 
+        agregar_boton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
         agregar_boton.setText("Agregar");
         agregar_boton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,7 +169,7 @@ public class AgregarStock extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(agregar_boton)
                 .addContainerGap())
         );
@@ -185,19 +189,7 @@ public class AgregarStock extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void filtro_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filtro_fieldKeyTyped
-
-         filtro_field.addKeyListener(new KeyAdapter() {
-            public void keyReleased(final KeyEvent e) {
-                String cadena = (filtro_field.getText());
-                filtro_field.setText(cadena);
-                repaint();
-                filtro();
-            }
-        });
-        trsFiltro = new TableRowSorter(tabla.getModel());
-        tabla.setRowSorter(trsFiltro);
-
-        
+    
     }//GEN-LAST:event_filtro_fieldKeyTyped
 
     private void agregar_botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregar_botonActionPerformed
@@ -286,6 +278,19 @@ public class AgregarStock extends javax.swing.JInternalFrame {
         
         
     }//GEN-LAST:event_agregar_botonActionPerformed
+
+    private void filtro_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filtro_fieldKeyReleased
+         filtro_field.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                String cadena = (filtro_field.getText());
+                filtro_field.setText(cadena);
+                repaint();
+                filtro();
+            }
+        });
+        trsFiltro = new TableRowSorter(tabla.getModel());
+        tabla.setRowSorter(trsFiltro);
+    }//GEN-LAST:event_filtro_fieldKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
