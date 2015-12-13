@@ -30,6 +30,8 @@ public class categorias extends javax.swing.JInternalFrame {
     public categorias() {
         initComponents();
      
+        ventanaAgregar2.setLocationRelativeTo(this);
+        
     }
 
     /**
@@ -68,6 +70,7 @@ public class categorias extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Categoria");
 
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
         jButton4.setText("Agregar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,12 +83,17 @@ public class categorias extends javax.swing.JInternalFrame {
         ventanaAgregar2Layout.setHorizontalGroup(
             ventanaAgregar2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ventanaAgregar2Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
                 .addGroup(ventanaAgregar2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton4)
-                    .addComponent(categoriaAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(67, Short.MAX_VALUE))
+                    .addGroup(ventanaAgregar2Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jButton4))
+                    .addGroup(ventanaAgregar2Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(categoriaAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ventanaAgregar2Layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jLabel1)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         ventanaAgregar2Layout.setVerticalGroup(
             ventanaAgregar2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,9 +102,9 @@ public class categorias extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(categoriaAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton4)
-                .addGap(20, 20, 20))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         setClosable(true);
@@ -182,8 +190,7 @@ public class categorias extends javax.swing.JInternalFrame {
                         .addGap(59, 59, 59)
                         .addComponent(ventanaAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(214, 214, 214)
-                        .addComponent(ventanaEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(ventanaEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(128, 128, 128)
@@ -236,7 +243,7 @@ public class categorias extends javax.swing.JInternalFrame {
         ventanaAgregar.toFront();
         */
         ventanaAgregar2.pack();
-        ventanaAgregar2.setSize(195,155);
+        ventanaAgregar2.setSize(195,175);
         ventanaAgregar2.setModal(rootPaneCheckingEnabled);
         ventanaAgregar2.setVisible(true);
         
