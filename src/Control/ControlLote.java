@@ -11,8 +11,15 @@ import Modelo.Lote;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Modelo.Lotes;
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 /**
  *
  * @author hiory
@@ -83,9 +90,43 @@ public void EliminarLote(Long codigo) throws SQLException{
             
         }catch (SQLException ex) {
             ex.printStackTrace();
+
         }
     }
 
+ public List <Lotes> buscarlote() throws ClassNotFoundException{
+       
+    List<Lotes> lotes = new ArrayList<Lotes>();
 
+        try {
+            Conexion e=new Conexion();
+            conn=e.conectado();
+            
+            String query="SELECT * FROM `lote` \n" +
+                          "LEFT JOIN `producto` \n" +
+                          "ON lote.codigo = producto.codigo\n" +
+                          "ORDER BY lote.vencimiento ASC";
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                
+                Lotes lote = new Lotes();
+                lote.setNombre(rs.getString("nombre"));
+                lote.setLote(rs.getString("lote"));
+                lote.setVencimiento(rs.getDate("vencimiento"));
+                lote.setCodigo(rs.getLong("codigo"));
+                lotes.add(lote);
 
+            }
+            
+        } catch (SQLException ex) {}
+        return lotes;
+
+}
+ 
+ 
+ 
+ 
+ 
 }

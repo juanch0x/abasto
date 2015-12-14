@@ -17,6 +17,8 @@ public class principal extends javax.swing.JFrame {
     categorias categoria;
     CrearProducto crearproducto;
     AgregarStock agregarstock;
+    Venta venta;
+    Vencimientos vencimientos;
     /**
      * Creates new form principal
      */
@@ -197,8 +199,11 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-
-        System.exit(0);
+       
+         vencimientos = new Vencimientos();
+         this.getContentPane().add(escritorio);
+         vencimientos.setVisible(true);
+         escritorio.add(vencimientos);
         
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

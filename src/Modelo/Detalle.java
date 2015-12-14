@@ -11,6 +11,7 @@ package Modelo;
  */
 public class Detalle {
     
+    private long id_venta;
     private double codigo;
     private int cantidad;
 
