@@ -5,18 +5,55 @@
  */
 package Vista;
 
+import Control.ControlCategoria;
+import Control.ControlProducto;
+import Modelo.Categoria;
+import Modelo.Producto;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author juanch0x
  */
-public class Venta extends javax.swing.JFrame {
+public class Venta extends javax.swing.JInternalFrame {
+            
+                private TableRowSorter trsFiltro;
+                AgregarStock robodecodigo;
 
-    /**
-     * Creates new form Venta
-     */
+            ImageIcon imagen = new ImageIcon(getClass().getResource("/Images/delete_1616.png"));
+
     public Venta() {
         initComponents();
-    }
+        setTabla();
+        tabla.setRowHeight(25);
+        robodecodigo = new AgregarStock();
+        
+        
+      
+
+        
+        
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,71 +64,392 @@ public class Venta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        ventana = new javax.swing.JDialog();
+        filtro_field = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabla_productos = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        codigo_label = new javax.swing.JLabel();
+        codigo_field = new javax.swing.JTextField();
+        cantidad_label = new javax.swing.JLabel();
+        cantidad_field = new javax.swing.JTextField();
+        producto_label = new javax.swing.JLabel();
+        producto_field = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabla = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        filtro_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                filtro_fieldKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                filtro_fieldKeyTyped(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 606, Short.MAX_VALUE)
+        tabla_productos.setModel(obtenerProductos());
+        jScrollPane2.setViewportView(tabla_productos);
+
+        jLabel1.setText("Producto");
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
+        jButton4.setText("Agregar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ventanaLayout = new javax.swing.GroupLayout(ventana.getContentPane());
+        ventana.getContentPane().setLayout(ventanaLayout);
+        ventanaLayout.setHorizontalGroup(
+            ventanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ventanaLayout.createSequentialGroup()
+                .addGroup(ventanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ventanaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ventanaLayout.createSequentialGroup()
+                        .addGap(105, 105, 105)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(filtro_field, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ventanaLayout.createSequentialGroup()
+                        .addGap(156, 156, 156)
+                        .addComponent(jButton4)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 468, Short.MAX_VALUE)
+        ventanaLayout.setVerticalGroup(
+            ventanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(ventanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(filtro_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton4)
+                .addContainerGap())
         );
+
+        setBorder(new javax.swing.border.MatteBorder(null));
+        setClosable(true);
+        setTitle("Venta");
+        setToolTipText("");
+
+        codigo_label.setText("Codigo");
+
+        cantidad_label.setText("Cantidad");
+
+        producto_label.setText("Producto");
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
+        jButton1.setText("Cerrar Venta");
+
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tabla);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
+        jButton2.setText("Agregar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/1450422891_Search.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(producto_label)
+                                    .addComponent(codigo_label))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(codigo_field, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                                    .addComponent(producto_field)))
+                            .addComponent(jButton1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(cantidad_label)
+                                .addGap(18, 18, 18)
+                                .addComponent(cantidad_field, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jButton2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(69, 69, 69))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(codigo_label)
+                            .addComponent(codigo_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(producto_label)
+                                .addComponent(producto_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cantidad_label)
+                            .addComponent(cantidad_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(31, 31, 31))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Venta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Venta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Venta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Venta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void filtro_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filtro_fieldKeyTyped
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Venta().setVisible(true);
+    }//GEN-LAST:event_filtro_fieldKeyTyped
+
+    private void filtro_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filtro_fieldKeyReleased
+
+        filtro_field.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                String cadena = (filtro_field.getText());
+                filtro_field.setText(cadena);
+                repaint();
+                filtro();
             }
         });
-    }
+        trsFiltro = new TableRowSorter(tabla_productos.getModel());
+        tabla_productos.setRowSorter(trsFiltro);
+        
+    }//GEN-LAST:event_filtro_fieldKeyReleased
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        ventana.pack();
+        ventana.setSize(475,300);
+        ventana.setModal(rootPaneCheckingEnabled);
+        ventana.setVisible(true);
+        filtro_field.setText("");
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+System.out.println(tabla_productos.getValueAt(tabla_productos.getSelectedRow(), 0));        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        producto_field.setText((String) tabla_productos.getValueAt(tabla_productos.getSelectedRow(), 0));
+        ventana.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField cantidad_field;
+    private javax.swing.JLabel cantidad_label;
+    private javax.swing.JTextField codigo_field;
+    private javax.swing.JLabel codigo_label;
+    private javax.swing.JTextField filtro_field;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField producto_field;
+    private javax.swing.JLabel producto_label;
+    private javax.swing.JTable tabla;
+    private javax.swing.JTable tabla_productos;
+    private javax.swing.JDialog ventana;
     // End of variables declaration//GEN-END:variables
+
+
+private void setTabla() {
+        
+        
+        //Creamos un objeto ImageIcon con el nombre de la imagen
+        ImageIcon imagen = new ImageIcon(getClass().getResource("/Images/delete_1616.png"));
+             
+
+        // Esta lista contiene los nombres que se mostrarán en el encabezado de cada columna de la grilla
+        String[] columnas = new String[]{
+            "Codigo de Barras",
+            "Producto",
+            "Cantidad",
+            "Precio",
+            "Eliminar"};
+
+        // Estos son los tipos de datos de cada columna de la lista
+        final Class[] tiposColumnas = new Class[]{
+            long.class,
+            java.lang.String.class,
+            int.class,
+            float.class,
+            //int.class,
+            JButton.class // <- noten que aquí se especifica que la última columna es un botón
+        };
+
+        // Agrego los registros que contendrá la grilla.
+        // Observen que el último campo es un botón
+        Object[][] datos = new Object[][]{
+            
+            {"4444444444444", "Coca Cola", 12, 15.5, new JButton(imagen)},
+            {"5551231232133", "PepsiCola", 15, 7.3, new JButton(imagen)},
+            {"588192983198", "TalcaCola", 18, 9.3, new JButton(imagen)}
+        };
+
+        // Defino el TableModel y le indico los datos y nombres de columnas
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+                datos,
+                columnas) {
+            // Esta variable nos permite conocer de antemano los tipos de datos de cada columna, dentro del TableModel
+            Class[] tipos = tiposColumnas;
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                // Este método es invocado por el CellRenderer para saber que dibujar en la celda,
+                // observen que estamos retornando la clase que definimos de antemano.
+                return tipos[columnIndex];
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Sobrescribimos este método para evitar que la columna que contiene los botones sea editada.
+                return !(this.getColumnClass(column).equals(JButton.class));
+            }
+        });
+
+        // El objetivo de la siguiente línea es indicar el CellRenderer que será utilizado para dibujar el botón
+        tabla.setDefaultRenderer(JButton.class, new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable jtable, Object objeto, boolean estaSeleccionado, boolean tieneElFoco, int fila, int columna) {
+                /**
+                 * Observen que todo lo que hacemos en éste método es retornar el objeto que se va a dibujar en la 
+                 * celda. Esto significa que se dibujará en la celda el objeto que devuelva el TableModel. También 
+                 * significa que este renderer nos permitiría dibujar cualquier objeto gráfico en la grilla, pues 
+                 * retorna el objeto tal y como lo recibe.
+                 */
+                return (Component) objeto;
+            }
+        });
+
+        /**
+         * Por último, agregamos un listener que nos permita saber cuando fue pulsada la celda que contiene el botón.
+         * Noten que estamos capturando el clic sobre JTable, no el clic sobre el JButton. Esto también implica que en 
+         * lugar de poner un botón en la celda, simplemente pudimos definir un CellRenderer que hiciera parecer que la 
+         * celda contiene un botón. Es posible capturar el clic del botón, pero a mi parecer el efecto es el mismo y 
+         * hacerlo de esta forma es más "simple"
+         */
+        tabla.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int fila = tabla.rowAtPoint(e.getPoint());
+                int columna = tabla.columnAtPoint(e.getPoint());
+
+                /**
+                 * Preguntamos si hicimos clic sobre la celda que contiene el botón, si tuviéramos más de un botón 
+                 * por fila tendríamos que además preguntar por el contenido del botón o el nombre de la columna
+                 */
+                if (tabla.getModel().getColumnClass(columna).equals(JButton.class)) {
+                    /**
+                     * Aquí pueden poner lo que quieran, para efectos de este ejemplo, voy a mostrar
+                     * en un cuadro de dialogo todos los campos de la fila que no sean un botón.
+                     */
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < tabla.getModel().getColumnCount(); i++) {
+                        if (!tabla.getModel().getColumnClass(i).equals(JButton.class)) {
+                            sb.append("\n").append(tabla.getModel().getColumnName(i)).append(": ").append(tabla.getModel().getValueAt(fila, i));
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, "Seleccionada la fila " + fila + sb.toString());
+                }
+            }
+        });
 }
+
+public void filtro() {
+        
+              
+        trsFiltro.setRowFilter(RowFilter.regexFilter(filtro_field.getText(), 0));
+    }
+
+
+public DefaultTableModel obtenerProductos() {
+        
+        String encabezados[]= {"Nombre","Precio Venta","Stock"};
+        ControlProducto c = new ControlProducto();
+        List<Producto> productos = null;
+        
+        try {
+            productos = c.obtenerProductos();
+             
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AgregarStock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       
+            
+        String [][] data = new String[productos.size()][3];
+        for (int i = 0; i < productos.size(); i++) {
+        
+            
+            data[i][0] = productos.get(i).getNombre();
+            data[i][1] = Float.toString(productos.get(i).getPrecio_v());
+            data[i][2] = Integer.toString(productos.get(i).getCantidad());
+                
+           
+        }
+        
+        return new DefaultTableModel(data,encabezados);
+    }
+
+
+}
+    
+
+
+
+
+
+
