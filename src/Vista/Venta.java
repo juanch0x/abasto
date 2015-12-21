@@ -16,6 +16,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -39,7 +40,9 @@ public class Venta extends javax.swing.JInternalFrame {
             
                 private TableRowSorter trsFiltro;
                 AgregarStock robodecodigo;
-
+                Double total;
+                int variable;
+                
             ImageIcon imagen = new ImageIcon(getClass().getResource("/Images/delete_1616.png"));
 
     public Venta() {
@@ -47,6 +50,8 @@ public class Venta extends javax.swing.JInternalFrame {
         setTabla();
         tabla.setRowHeight(25);
         robodecodigo = new AgregarStock();
+        total = 0.0;
+        variable =0;
         
         
       
@@ -81,6 +86,10 @@ public class Venta extends javax.swing.JInternalFrame {
         tabla = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        precio_field = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        total_field = new javax.swing.JTextField();
 
         filtro_field.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -137,16 +146,26 @@ public class Venta extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        setBorder(new javax.swing.border.MatteBorder(null));
+        setBorder(null);
         setClosable(true);
         setTitle("Venta");
         setToolTipText("");
 
         codigo_label.setText("Codigo");
 
+        codigo_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                codigo_fieldKeyTyped(evt);
+            }
+        });
+
         cantidad_label.setText("Cantidad");
 
+        cantidad_field.setText("1");
+
         producto_label.setText("Producto");
+
+        producto_field.setEnabled(false);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
         jButton1.setText("Cerrar Venta");
@@ -180,40 +199,56 @@ public class Venta extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel2.setText("Precio");
+
+        precio_field.setEnabled(false);
+
+        jLabel3.setText("Total");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(producto_label)
-                                    .addComponent(codigo_label))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(codigo_field, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                                    .addComponent(producto_field)))
-                            .addComponent(jButton1)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(cantidad_label)
-                                .addGap(18, 18, 18)
-                                .addComponent(cantidad_field, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton1)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(producto_label)
+                                        .addComponent(codigo_label)
+                                        .addComponent(jLabel2))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(codigo_field, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                                        .addComponent(producto_field))))
+                            .addComponent(jButton2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(precio_field, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(cantidad_label)
+                            .addGap(18, 18, 18)
+                            .addComponent(cantidad_field, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(217, 217, 217)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(total_field, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
@@ -226,17 +261,25 @@ public class Venta extends javax.swing.JInternalFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(producto_label)
                                 .addComponent(producto_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(17, 17, 17)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(precio_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cantidad_label)
                             .addComponent(cantidad_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(13, 13, 13)
                         .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(total_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
                 .addGap(31, 31, 31))
         );
 
@@ -274,14 +317,82 @@ public class Venta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-System.out.println(tabla_productos.getValueAt(tabla_productos.getSelectedRow(), 0));        // TODO add your handling code here:
+
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel(); 
+        
+        Float precio;
+        
+        
+        
+        precio = Float.parseFloat(precio_field.getText());
+        
+        if(Integer.parseInt(cantidad_field.getText())!=1){
+        precio = precio * Integer.parseInt(cantidad_field.getText());
+        }
+        
+        Object[] a = new Object[]{codigo_field.getText(),producto_field.getText(), cantidad_field.getText(), precio, new JButton(imagen)};
+        
+         
+         
+        modelo.addRow(a);
+        tabla.setModel(modelo);
+    
+        
+        
+        total = 0.0;
+        
+        for(int i=0; i<tabla.getRowCount();i++){
+            
+            total = total + Double.parseDouble(tabla.getValueAt(i, 3).toString());
+            
+            
+        }
+            total_field.setText(String.valueOf(total));
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
-        producto_field.setText((String) tabla_productos.getValueAt(tabla_productos.getSelectedRow(), 0));
+        ControlProducto a = new ControlProducto();
+        Producto p = new Producto();
+        
+        String producto;
+        
+        producto = (String) tabla_productos.getValueAt(tabla_productos.getSelectedRow(), 0);
+        
+        producto_field.setText(producto);
+        
+                    try {
+                        p = a.busqueda(producto);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                   
+                    
+        codigo_field.setText(String.valueOf(p.getCodigo()));
+        precio_field.setText(String.valueOf(p.getPrecio_v()));
+        
         ventana.dispose();
+        
+        variable = 1;
+        cantidad_field.setText("1");
+        cantidad_field.requestFocus();
+
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void codigo_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo_fieldKeyTyped
+
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            cantidad_field.requestFocus();
+        
+        }
+        
+        
+    }//GEN-LAST:event_codigo_fieldKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -295,12 +406,16 @@ System.out.println(tabla_productos.getValueAt(tabla_productos.getSelectedRow(), 
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField precio_field;
     private javax.swing.JTextField producto_field;
     private javax.swing.JLabel producto_label;
     private javax.swing.JTable tabla;
     private javax.swing.JTable tabla_productos;
+    private javax.swing.JTextField total_field;
     private javax.swing.JDialog ventana;
     // End of variables declaration//GEN-END:variables
 
@@ -334,10 +449,10 @@ private void setTabla() {
         // Observen que el último campo es un botón
         Object[][] datos = new Object[][]{
             
-            {"4444444444444", "Coca Cola", 12, 15.5, new JButton(imagen)},
+           /* {"4444444444444", "Coca Cola", 12, 15.5, new JButton(imagen)},
             {"5551231232133", "PepsiCola", 15, 7.3, new JButton(imagen)},
             {"588192983198", "TalcaCola", 18, 9.3, new JButton(imagen)}
-        };
+        */};
 
         // Defino el TableModel y le indico los datos y nombres de columnas
         tabla.setModel(new javax.swing.table.DefaultTableModel(
@@ -396,10 +511,15 @@ private void setTabla() {
                      * Aquí pueden poner lo que quieran, para efectos de este ejemplo, voy a mostrar
                      * en un cuadro de dialogo todos los campos de la fila que no sean un botón.
                      */
+                 DefaultTableModel model = (DefaultTableModel) tabla.getModel(); 
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < tabla.getModel().getColumnCount(); i++) {
                         if (!tabla.getModel().getColumnClass(i).equals(JButton.class)) {
+                            total =  total - Double.parseDouble(tabla.getValueAt(tabla.getSelectedRow(), 3).toString());
                             sb.append("\n").append(tabla.getModel().getColumnName(i)).append(": ").append(tabla.getModel().getValueAt(fila, i));
+                            model.removeRow(tabla.getSelectedRow());
+                            
+
                         }
                     }
                     JOptionPane.showMessageDialog(null, "Seleccionada la fila " + fila + sb.toString());
@@ -445,7 +565,20 @@ public DefaultTableModel obtenerProductos() {
     }
 
 
-}
+
+
+private void recalcularTotal(int a){
+
+    for(int i=0; i<tabla.getRowCount();i++){
+            
+            total =  total - Double.parseDouble(tabla.getValueAt(a, 3).toString());
+            System.out.println("ASd");
+            
+        }
+System.out.println("asdfueradelif");
+    total_field.setText(String.valueOf(total));
+    
+}}
     
 
 

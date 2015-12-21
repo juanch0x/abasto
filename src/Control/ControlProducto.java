@@ -187,6 +187,29 @@ public void AgregarStock (int cantidad, Long codigo, String lote, Date fecha) th
         }
 
 
+public Producto busqueda(String producto) throws SQLException{
+      
+          Producto c=new Producto();
+          
+          Conexion e=new Conexion();
+          
+          conn = e.conectado();
+          
+           String query="SELECT * FROM producto WHERE nombre = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, producto);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+            c.setCodigo(Long.parseLong(rs.getString("codigo")));
+            c.setPrecio_v(Float.parseFloat(rs.getString("precio")));
+            }
+          
+          return c;
+      }
+
+
+
 } 
           
           

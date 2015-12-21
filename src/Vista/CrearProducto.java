@@ -70,6 +70,11 @@ public class CrearProducto extends javax.swing.JInternalFrame {
         codigo_label.setText("Codigo de Barras");
 
         nombre_jfield.setToolTipText("Nombre del producto");
+        nombre_jfield.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                nombre_jfieldKeyTyped(evt);
+            }
+        });
 
         codigo_jfield.setToolTipText("Si no posee codigo de barras dejar en blanco");
         codigo_jfield.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -91,6 +96,11 @@ public class CrearProducto extends javax.swing.JInternalFrame {
         jLabel2.setText("Precio Venta");
 
         preciov_jfield.setToolTipText("Precio de venta unitario");
+        preciov_jfield.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                preciov_jfieldActionPerformed(evt);
+            }
+        });
         preciov_jfield.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 preciov_jfieldKeyTyped(evt);
@@ -178,7 +188,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 30, Short.MAX_VALUE))
+                .addGap(0, 34, Short.MAX_VALUE))
         );
 
         pack();
@@ -267,6 +277,8 @@ public class CrearProducto extends javax.swing.JInternalFrame {
  
                 evt.consume();
                 }
+                
+              
     }//GEN-LAST:event_preciov_jfieldKeyTyped
 
     private void precioc_jfieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioc_jfieldKeyTyped
@@ -279,21 +291,52 @@ public class CrearProducto extends javax.swing.JInternalFrame {
  
                 evt.consume();
                 }
+                
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            precioc_jfield.requestFocus();
+        
+        }  
     }//GEN-LAST:event_precioc_jfieldKeyTyped
 
     private void codigo_jfieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo_jfieldKeyTyped
  //Validación sólo decimales
-        int cont=0;
+
         char caracter = evt.getKeyChar();
                 if(((caracter < '0') || (caracter > '9')) && (caracter != KeyEvent.VK_BACK_SPACE)){
  
-                cont++;
+                
                 evt.consume();
                 }
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            nombre_jfield.requestFocus();
+        
+        }
                           
-       if(cont==12){nombre_jfield.requestFocus();}         
+                
                 
     }//GEN-LAST:event_codigo_jfieldKeyTyped
+
+    private void nombre_jfieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombre_jfieldKeyTyped
+
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            precioc_jfield.requestFocus();
+        
+        }
+        
+    }//GEN-LAST:event_nombre_jfieldKeyTyped
+
+    private void preciov_jfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preciov_jfieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_preciov_jfieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
