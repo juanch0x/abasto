@@ -6,6 +6,7 @@ Prueba de como funciona git
 */
 package Vista;
 
+import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -237,7 +238,13 @@ public class principal extends javax.swing.JFrame {
            
            venta.setVisible(true);
            escritorio.add(venta);
-           
+           venta.moveToFront(); 
+        try { 
+            venta.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
         
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 

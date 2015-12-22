@@ -26,7 +26,9 @@ public class CrearProducto extends javax.swing.JInternalFrame {
      * Creates new form CrearProducto
      */
     public CrearProducto() throws ClassNotFoundException {
+        
         initComponents();
+        
         
                
          List <Categoria> lista = new ArrayList();
@@ -35,7 +37,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
         categoria_combo.removeAllItems();
         for (int i = 0; i < lista.size(); i++) { 
             categoria_combo.addItem(lista.get(i).getCategoria());
-        }
+               }
         
     }
 
@@ -296,7 +298,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
         
         if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
         
-            precioc_jfield.requestFocus();
+            preciov_jfield.requestFocus();
         
         }  
     }//GEN-LAST:event_precioc_jfieldKeyTyped

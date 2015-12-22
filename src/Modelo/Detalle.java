@@ -12,14 +12,14 @@ package Modelo;
 public class Detalle {
     
     private long id_venta;
-    private double codigo;
+    private long codigo;
     private int cantidad;
 
-    public double getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(double codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 

@@ -3,8 +3,8 @@
  * and open the template in the editor.
  */
 package Vista;
-import modelo.*;
-import control.*;
+//import modelo.*;
+//import control.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.Date;
