@@ -41,6 +41,8 @@ public class Vencimientos extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
+        setClosable(true);
+
         jTable1.setModel(buscarlotes());
         jScrollPane2.setViewportView(jTable1);
 

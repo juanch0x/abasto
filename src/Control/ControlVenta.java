@@ -59,6 +59,17 @@ int clave=0;
         ps.setInt(4, i);
         ps.executeUpdate();
         }
+        
+        
+        
+        for(int i=0 ; i< detalle.size() ; i++){
+        
+        sql="UPDATE producto SET cantidad=cantidad-? WHERE codigo=?";
+        ps = conn.prepareStatement(sql);
+        ps.setInt(1, detalle.get(i).getCantidad());
+        ps.setLong(2, detalle.get(i).getCodigo());
+        ps.executeUpdate();
+        }
            
 }
 

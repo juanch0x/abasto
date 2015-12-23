@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import Control.Conexion;
 import Control.ControlProducto;
 import Control.ControlVenta;
 import Modelo.Detalle;
@@ -14,6 +15,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +30,8 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -39,6 +43,8 @@ public class Venta extends javax.swing.JInternalFrame {
                 AgregarStock robodecodigo;
                 Double total;
                 int variable;
+                private static Connection conn;
+
                 
             ImageIcon imagen = new ImageIcon(getClass().getResource("/Images/delete_1616.png"));
 
@@ -89,6 +95,7 @@ public class Venta extends javax.swing.JInternalFrame {
         precio_field = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         total_field = new javax.swing.JTextField();
+        reportes = new javax.swing.JButton();
 
         filtro_field.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -217,6 +224,14 @@ public class Venta extends javax.swing.JInternalFrame {
 
         total_field.setFocusable(false);
 
+        reportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/print.png"))); // NOI18N
+        reportes.setEnabled(false);
+        reportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -224,36 +239,39 @@ public class Venta extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(cantidad_label)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(cantidad_field, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(codigo_label)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(codigo_field, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(reportes))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(cantidad_label)
+                            .addGap(18, 18, 18)
+                            .addComponent(cantidad_field, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(codigo_label)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(codigo_field, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(producto_label)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(precio_field, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                            .addComponent(producto_field))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(precio_field, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                                    .addComponent(producto_field))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(217, 217, 217)
+                        .addGap(215, 215, 215)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(total_field, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -281,10 +299,10 @@ public class Venta extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(precio_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2))
-                            .addComponent(codigo_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel2)))
+                            .addComponent(codigo_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -293,7 +311,9 @@ public class Venta extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
                         .addComponent(total_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(reportes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(31, 31, 31))
         );
 
@@ -326,7 +346,7 @@ public class Venta extends javax.swing.JInternalFrame {
         ventana.setModal(rootPaneCheckingEnabled);
         ventana.setVisible(true);
         filtro_field.setText("");
-        
+        reportes.setEnabled(false);
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -362,6 +382,12 @@ public class Venta extends javax.swing.JInternalFrame {
             
         }
             total_field.setText(String.valueOf(total));
+            
+        codigo_field.setText("");
+        cantidad_field.setText("1");
+        precio_field.setText("");
+        producto_field.setText("");
+        
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -408,6 +434,8 @@ public class Venta extends javax.swing.JInternalFrame {
                 Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println("Se agrego la wea");
+            
+            reportes.setEnabled(false);
         
         }
         
@@ -449,7 +477,44 @@ public class Venta extends javax.swing.JInternalFrame {
                         Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
 
         }
+                    
+        reportes.setEnabled(true);
+        codigo_field.setText("");
+        cantidad_field.setText("1");
+        precio_field.setText("");
+        producto_field.setText("");
+        total_field.setText("");
+        setTabla();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void reportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesActionPerformed
+
+Conexion e = new Conexion();
+
+conn = e.conectado();
+
+String dir = "C:\\Users\\Juan\\Documents\\NetBeansProjects\\abasto\\src\\Reportes\\factura.jrxml";
+ JasperReport reporteJasper = null; 
+                    try {
+                        reporteJasper = JasperCompileManager.compileReport(dir);
+                    } catch (JRException ex) {
+                        Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    JasperPrint mostrarReporte = null;
+                    try {
+                        mostrarReporte = JasperFillManager.fillReport(reporteJasper, null, e.conectado());
+                    } catch (JRException ex) {
+                        Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                   
+                    //Jasper es la ventana
+                    JasperViewer jasper;
+                    jasper = new JasperViewer(mostrarReporte,false);
+                    jasper.setVisible(true);
+                   
+
+    }//GEN-LAST:event_reportesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -470,6 +535,7 @@ public class Venta extends javax.swing.JInternalFrame {
     private javax.swing.JTextField precio_field;
     private javax.swing.JTextField producto_field;
     private javax.swing.JLabel producto_label;
+    private javax.swing.JButton reportes;
     private javax.swing.JTable tabla;
     private javax.swing.JTable tabla_productos;
     private javax.swing.JTextField total_field;

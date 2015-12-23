@@ -259,7 +259,7 @@ public class AgregarStock extends javax.swing.JInternalFrame {
 
            
            
-           codigo = Long.parseLong(tabla.getValueAt(a, 1).toString());
+           codigo = Long.parseLong(tabla.getValueAt(a, 1).toString().trim());
            
            
            
@@ -350,7 +350,7 @@ public void filtro() {
             columnaABuscar = 0;
         }
        
-        trsFiltro.setRowFilter(RowFilter.regexFilter(filtro_field.getText(), columnaABuscar));
+        trsFiltro.setRowFilter(RowFilter.regexFilter(filtro_field.getText().toLowerCase(), columnaABuscar));
     }
 
 }
