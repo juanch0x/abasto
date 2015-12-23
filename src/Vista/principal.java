@@ -8,6 +8,7 @@ package Vista;
 
 import Control.Conexion;
 import java.beans.PropertyVetoException;
+import java.io.File;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,14 +31,19 @@ public class principal extends javax.swing.JFrame {
     Vencimientos vencimientos;
     private static Connection conn;
     
+    
     /**
      * Creates new form principal
      */
     public principal() {
         
-        //this.setUndecorated(true);
+        
         this.setResizable(false);
-        //this.setExtendedState(this.MAXIMIZED_BOTH);
+        
+
+
+        
+
         
         initComponents();
         
@@ -277,11 +283,13 @@ public class principal extends javax.swing.JFrame {
         Conexion e = new Conexion();
 
 conn = e.conectado();
+String path;
+path = new File("").getAbsolutePath();
+path= path+"\\src\\Reportes\\ventasdiarias.jrxml";
 
-String dir = "C:\\Users\\Juan\\Documents\\NetBeansProjects\\abasto\\src\\Reportes\\ventasdiarias.jrxml";
  JasperReport reporteJasper = null; 
                     try {
-                        reporteJasper = JasperCompileManager.compileReport(dir);
+                        reporteJasper = JasperCompileManager.compileReport(path);
                     } catch (JRException ex) {
                         Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -295,6 +303,7 @@ String dir = "C:\\Users\\Juan\\Documents\\NetBeansProjects\\abasto\\src\\Reporte
                     //Jasper es la ventana
                     JasperViewer jasper;
                     jasper = new JasperViewer(mostrarReporte,false);
+                    jasper.setTitle("Cierre de Caja");
                     jasper.setVisible(true);
         
         

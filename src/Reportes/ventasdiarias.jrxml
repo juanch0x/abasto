@@ -45,10 +45,6 @@
 				<reportElement style="SubTitle" x="117" y="46" width="157" height="22" uuid="b16876d8-51cd-48cb-a587-f6dd5870c7e8"/>
 				<text><![CDATA[Cierre de caja]]></text>
 			</staticText>
-			<image>
-				<reportElement x="276" y="9" width="295" height="59" uuid="81e8a37f-1873-4766-b1e6-1335b6806f95"/>
-				<imageExpression><![CDATA["C:\\Users\\Juan\\Documents\\NetBeansProjects\\abasto\\src\\Reportes\\leaf_banner_gray.png"]]></imageExpression>
-			</image>
 		</band>
 	</title>
 	<pageHeader>

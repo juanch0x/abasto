@@ -15,6 +15,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class Venta extends javax.swing.JInternalFrame {
         variable =0;
         
         
-        codigo_field.requestFocusInWindow();
+        codigo_field.grabFocus();
         
       
 
@@ -311,9 +312,8 @@ public class Venta extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
                         .addComponent(total_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
-                        .addComponent(reportes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(reportes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(31, 31, 31))
         );
 
@@ -493,11 +493,13 @@ public class Venta extends javax.swing.JInternalFrame {
 Conexion e = new Conexion();
 
 conn = e.conectado();
+String path;
+path = new File("").getAbsolutePath();
+path= path+"\\src\\Reportes\\factura.jrxml";
 
-String dir = "C:\\Users\\Juan\\Documents\\NetBeansProjects\\abasto\\src\\Reportes\\factura.jrxml";
  JasperReport reporteJasper = null; 
                     try {
-                        reporteJasper = JasperCompileManager.compileReport(dir);
+                        reporteJasper = JasperCompileManager.compileReport(path);
                     } catch (JRException ex) {
                         Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -511,6 +513,7 @@ String dir = "C:\\Users\\Juan\\Documents\\NetBeansProjects\\abasto\\src\\Reporte
                     //Jasper es la ventana
                     JasperViewer jasper;
                     jasper = new JasperViewer(mostrarReporte,false);
+                    jasper.setTitle("Detalle de venta");
                     jasper.setVisible(true);
                    
 
