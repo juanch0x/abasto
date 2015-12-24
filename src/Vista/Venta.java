@@ -28,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
@@ -58,7 +59,12 @@ public class Venta extends javax.swing.JInternalFrame {
         variable =0;
         
         
-        codigo_field.grabFocus();
+       SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                      codigo_field.requestFocus();
+                }
+          });
         
       
 
@@ -731,10 +737,10 @@ cantidad_field.setText("1");
 
 }
 
-}
+
     
 
-
+}
 
 
 
