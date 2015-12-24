@@ -31,6 +31,7 @@ public class categorias extends javax.swing.JInternalFrame {
         initComponents();
      
         ventanaAgregar2.setLocationRelativeTo(this);
+        ventanaModificar.setLocationRelativeTo(this);
         
     }
 
@@ -47,6 +48,12 @@ public class categorias extends javax.swing.JInternalFrame {
         categoriaAgregar = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        ventanaModificar = new javax.swing.JDialog();
+        jLabel2 = new javax.swing.JLabel();
+        categoria_actual_dialog = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        categoria_nueva_dialogo = new javax.swing.JTextField();
+        jButton5 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -107,6 +114,61 @@ public class categorias extends javax.swing.JInternalFrame {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
+        ventanaModificar.setAlwaysOnTop(true);
+        ventanaModificar.setPreferredSize(new java.awt.Dimension(184, 145));
+        ventanaModificar.setType(java.awt.Window.Type.POPUP);
+
+        jLabel2.setText("Nombre Actual");
+
+        categoria_actual_dialog.setEnabled(false);
+
+        jLabel3.setText("Nuevo Nombre");
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/edit.png"))); // NOI18N
+        jButton5.setText("Modificar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ventanaModificarLayout = new javax.swing.GroupLayout(ventanaModificar.getContentPane());
+        ventanaModificar.getContentPane().setLayout(ventanaModificarLayout);
+        ventanaModificarLayout.setHorizontalGroup(
+            ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ventanaModificarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(ventanaModificarLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(categoria_actual_dialog, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ventanaModificarLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(categoria_nueva_dialogo)))
+                .addContainerGap(26, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaModificarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton5)
+                .addGap(44, 44, 44))
+        );
+        ventanaModificarLayout.setVerticalGroup(
+            ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ventanaModificarLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(categoria_actual_dialog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(categoria_nueva_dialogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, Short.MAX_VALUE)
+                .addGap(7, 7, 7))
+        );
+
         setClosable(true);
         setTitle("Categorias");
 
@@ -128,6 +190,11 @@ public class categorias extends javax.swing.JInternalFrame {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/edit.png"))); // NOI18N
         jButton3.setText("Modificar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -234,20 +301,12 @@ public class categorias extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        /*jPanel1.setSize(575,300);
-        ventanaAgregar.pack();
-        ventanaAgregar.setSize(611,465);
-        
-        ventanaAgregar.setVisible(true);
-        jPanel1.add(ventanaAgregar);
-        ventanaAgregar.toFront();
-        */
+       
         ventanaAgregar2.pack();
         ventanaAgregar2.setSize(195,175);
         ventanaAgregar2.setModal(rootPaneCheckingEnabled);
         ventanaAgregar2.setVisible(true);
         
-      //  jPanel1.add(ventanaAgregar2);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -320,20 +379,66 @@ public class categorias extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        
+         if (tabla.getSelectedRow()<0){ 
+ 
+                JOptionPane.showMessageDialog(null, 
+                "Debe seleccionar una categoria de la tabla" ); 
+ 
+         }else{
+        
+        categoria_actual_dialog.setText((String) tabla.getValueAt(tabla.getSelectedRow(), 1));
+
+        ventanaModificar.pack();
+        ventanaModificar.setSize(240,200);
+        ventanaModificar.setModal(rootPaneCheckingEnabled);
+        ventanaModificar.setVisible(true);
+         }
+
+       
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+
+        
+        ControlCategoria control = new ControlCategoria();
+        Categoria categoria = new Categoria();
+        categoria.setCategoria(categoria_nueva_dialogo.getText());
+        categoria.setId_categoria(Integer.parseInt(new String((String) tabla.getValueAt(tabla.getSelectedRow(), 0))));
+        
+        try {
+            control.modificarCategoria(categoria);
+        } catch (SQLException ex) {
+            Logger.getLogger(categorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        tabla.setValueAt(categoria_nueva_dialogo.getText(), tabla.getSelectedRow(), 1);
+        ventanaModificar.dispose();
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField categoriaAgregar;
+    private javax.swing.JTextField categoria_actual_dialog;
+    private javax.swing.JTextField categoria_nueva_dialogo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla;
     private javax.swing.JInternalFrame ventanaAgregar;
     private javax.swing.JDialog ventanaAgregar2;
     private javax.swing.JInternalFrame ventanaEditar;
+    private javax.swing.JDialog ventanaModificar;
     // End of variables declaration//GEN-END:variables
 
 

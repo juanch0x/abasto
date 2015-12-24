@@ -10,6 +10,8 @@ import Control.Conexion;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.jasperreports.engine.JRException;
@@ -46,7 +48,7 @@ public class principal extends javax.swing.JFrame {
 
         
         initComponents();
-        
+        popup_cantidad_stock.setLocationRelativeTo(this);
         
         
     }
@@ -65,6 +67,11 @@ public class principal extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        popup_cantidad_stock = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
+        stock_field = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        boton_stock = new javax.swing.JButton();
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu6 = new javax.swing.JMenu();
@@ -73,10 +80,10 @@ public class principal extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         jMenu3.setText("File");
         jMenuBar2.add(jMenu3);
@@ -87,6 +94,48 @@ public class principal extends javax.swing.JFrame {
         jMenu5.setText("jMenu5");
 
         jMenuItem4.setText("jMenuItem4");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setText("Ingrese la cantidad de stock mínima");
+
+        boton_stock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/print.png"))); // NOI18N
+        boton_stock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boton_stockActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout popup_cantidad_stockLayout = new javax.swing.GroupLayout(popup_cantidad_stock.getContentPane());
+        popup_cantidad_stock.getContentPane().setLayout(popup_cantidad_stockLayout);
+        popup_cantidad_stockLayout.setHorizontalGroup(
+            popup_cantidad_stockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(popup_cantidad_stockLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(popup_cantidad_stockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(popup_cantidad_stockLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(83, 83, 83)
+                        .addComponent(boton_stock))
+                    .addComponent(stock_field))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        popup_cantidad_stockLayout.setVerticalGroup(
+            popup_cantidad_stockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(popup_cantidad_stockLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(stock_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(popup_cantidad_stockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(popup_cantidad_stockLayout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jLabel2))
+                    .addGroup(popup_cantidad_stockLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(boton_stock)))
+                .addGap(31, 31, 31))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Abasto");
@@ -154,24 +203,12 @@ public class principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
-            }
-        });
-
-        jMenuItem3.setText("jMenuItem3");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem3);
-
-        jMenuBar1.add(jMenu2);
-
         jMenu7.setText("Reportes");
+        jMenu7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu7ActionPerformed(evt);
+            }
+        });
 
         jMenuItem7.setText("Cierre de Caja");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
@@ -180,6 +217,22 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jMenu7.add(jMenuItem7);
+
+        jMenuItem8.setText("Control de Stock");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem8);
+
+        jMenuItem3.setText("Vencimientos");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem3);
 
         jMenuBar1.add(jMenu7);
 
@@ -234,10 +287,6 @@ public class principal extends javax.swing.JFrame {
         escritorio.add(crearproducto);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-// TODO add your handling code here:
-    }//GEN-LAST:event_jMenu2ActionPerformed
-
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
        
          vencimientos = new Vencimientos();
@@ -285,8 +334,9 @@ public class principal extends javax.swing.JFrame {
 conn = e.conectado();
 String path;
 path = new File("").getAbsolutePath();
+System.out.println(path);
 path= path+"\\src\\Reportes\\ventasdiarias.jrxml";
-
+System.out.println(path);
  JasperReport reporteJasper = null; 
                     try {
                         reporteJasper = JasperCompileManager.compileReport(path);
@@ -303,11 +353,71 @@ path= path+"\\src\\Reportes\\ventasdiarias.jrxml";
                     //Jasper es la ventana
                     JasperViewer jasper;
                     jasper = new JasperViewer(mostrarReporte,false);
+                    
                     jasper.setTitle("Cierre de Caja");
                     jasper.setVisible(true);
         
         
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+ 
+        popup_cantidad_stock.pack();
+        popup_cantidad_stock.setSize(300,171);
+        popup_cantidad_stock.setModal(rootPaneCheckingEnabled);
+        popup_cantidad_stock.setVisible(true);
+               
+    
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenu7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu7ActionPerformed
+
+    private void boton_stockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_stockActionPerformed
+
+        Conexion e = new Conexion();
+
+conn = e.conectado();
+String path;
+path = new File("").getAbsolutePath();
+System.out.println(path);
+path= path+"\\src\\Reportes\\consulta_stock.jrxml";
+System.out.println(path);
+ JasperReport reporteJasper = null; 
+
+/*Map<Integer, String> parametros = new HashMap<Integer, String>();
+parametros.put(12, "Juan");
+*/
+
+Map parametros = new HashMap();
+parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
+
+
+                    try {
+                        reporteJasper = JasperCompileManager.compileReport(path);
+                    } catch (JRException ex) {
+                        Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                        JasperPrint mostrarReporte = null;
+                    try {
+                         mostrarReporte = JasperFillManager.fillReport(reporteJasper, parametros, e.conectado());
+                        
+                    } catch (JRException ex) {
+                        Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                   
+                    //Jasper es la ventana
+                    
+                    JasperViewer jasper;
+                    jasper = new JasperViewer(mostrarReporte,false);
+                    
+                    jasper.setTitle("Consulta de Stock");
+                    jasper.setVisible(true);
+                    
+                   popup_cantidad_stock.dispose();
+                   jasper.requestFocus();
+    }//GEN-LAST:event_boton_stockActionPerformed
 
     /**
      * @param args the command line arguments
@@ -345,9 +455,11 @@ path= path+"\\src\\Reportes\\ventasdiarias.jrxml";
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton boton_stock;
     private javax.swing.JDesktopPane escritorio;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
@@ -362,5 +474,8 @@ path= path+"\\src\\Reportes\\ventasdiarias.jrxml";
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JDialog popup_cantidad_stock;
+    private javax.swing.JTextField stock_field;
     // End of variables declaration//GEN-END:variables
 }

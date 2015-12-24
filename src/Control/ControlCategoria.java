@@ -38,13 +38,7 @@ public class ControlCategoria {
         
     }
     
-  /*  String sql2="DELETE FROM alumno WHERE id=?";
-            conexion=Conexion.getConexion();
-            
-            ps=conexion.prepareStatement(sql2);
-            ps.setString(1,p);
-            ps.executeUpdate();
-*/
+
     
 
 public List <Categoria> obtenerCategorias() throws ClassNotFoundException{
@@ -117,6 +111,20 @@ public List <Categoria> obtenerCategorias() throws ClassNotFoundException{
           return c;
       }
 
+public void modificarCategoria(Categoria categoria) throws SQLException{
 
-
+    Conexion e = new Conexion();
+    conn = e.conectado();
+    
+    String query="UPDATE categoria SET categoria=? WHERE id_categoria=?";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, categoria.getCategoria());
+    ps.setInt(2, categoria.getId_categoria());
+    ps.executeUpdate();
+    
+    
+    
+}
+    
+       
 }
