@@ -5,7 +5,6 @@
 package Control;
 
 import Modelo.Producto;
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -209,7 +208,68 @@ public Producto busqueda(String producto) throws SQLException{
           return c;
       }
 
+public boolean validarDatos(Long codigo) throws SQLException{
 
+    boolean existe=false;
+    Conexion e=new Conexion();
+    conn = e.conectado();
+    
+       
+    String query="SELECT count(*) AS existe FROM producto WHERE codigo = ?";
+    ps = conn.prepareStatement(query);
+    ps.setLong(1, codigo);
+    rs = ps.executeQuery();
+    while(rs.next()){
+    if(rs.getInt(1)>=1){
+        
+        existe=true;
+    }
+    }
+    
+return existe;
+}
+
+public boolean validarDatos(String producto) throws SQLException{
+
+    boolean existe=false;
+    Conexion e=new Conexion();
+    conn = e.conectado();
+    
+       
+    String query="SELECT count(*) AS existe FROM producto WHERE nombre = ?";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, producto);
+    rs = ps.executeQuery();
+    while(rs.next()){
+    if(rs.getInt(1)>=1){
+        
+        existe=true;
+    }
+    }
+    
+return existe;
+}
+
+public Producto busqueda(Long codigo) throws SQLException{
+      
+          Producto c=new Producto();
+          
+          Conexion e=new Conexion();
+          
+          conn = e.conectado();
+          
+           String query="SELECT precio,nombre FROM producto WHERE codigo = ?";
+            ps = conn.prepareStatement(query);
+            ps.setLong(1, codigo);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+            c.setNombre(rs.getString("nombre"));
+            c.setPrecio_v(Float.parseFloat(rs.getString("precio")));
+            }
+          
+          return c;
+      }
 
 } 
           

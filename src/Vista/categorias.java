@@ -7,11 +7,17 @@ package Vista;
 
 import Control.ControlCategoria;
 import Modelo.Categoria;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -69,6 +75,8 @@ public class categorias extends javax.swing.JInternalFrame {
         ventanaAgregar = new javax.swing.JInternalFrame();
         ventanaEditar = new javax.swing.JInternalFrame();
 
+        addEscapeListenerWindowDialog(ventanaAgregar2);
+
         categoriaAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoriaAgregarActionPerformed(evt);
@@ -117,6 +125,7 @@ public class categorias extends javax.swing.JInternalFrame {
         ventanaModificar.setAlwaysOnTop(true);
         ventanaModificar.setPreferredSize(new java.awt.Dimension(184, 145));
         ventanaModificar.setType(java.awt.Window.Type.POPUP);
+        addEscapeListenerWindowDialog(ventanaModificar);
 
         jLabel2.setText("Nombre Actual");
 
@@ -147,7 +156,7 @@ public class categorias extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(categoria_nueva_dialogo)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaModificarLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton5)
@@ -342,14 +351,13 @@ public class categorias extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
                  DefaultTableModel model = (DefaultTableModel) tabla.getModel(); 
- 
+                 ControlCategoria control = new ControlCategoria();
+                 
          
                  
           int a = tabla.getSelectedRow(); 
-          System.out.println(a);
-          System.out.println(tabla.getValueAt(a, 1));
-         
-          
+           
+                 
           if (a<0){ 
  
                 JOptionPane.showMessageDialog(null, 
@@ -367,8 +375,14 @@ public class categorias extends javax.swing.JInternalFrame {
 
                      
                   //Sección 6
-                   model.removeRow(a); 
- 
+                   
+                try {
+                    control.eliminarCategoria(Integer.parseInt(new String((String) tabla.getValueAt(a, 0))));
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(categorias.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    model.removeRow(a); 
                   //Sección 7
                    JOptionPane.showMessageDialog(null,"Registro Eliminado" );
  
@@ -463,8 +477,17 @@ public DefaultTableModel obtenerCategorias() {
     }
 
 
+//Funcion para poder cerrar los jDialog con escape
 
-
+public static void addEscapeListenerWindowDialog( final JDialog windowDialog) {ActionListener escAction = new ActionListener() {
+@Override
+public void actionPerformed(ActionEvent e) {
+windowDialog.dispose();
+}
+};
+windowDialog.getRootPane().registerKeyboardAction(escAction,
+KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+JComponent.WHEN_IN_FOCUSED_WINDOW);}
 
 
 

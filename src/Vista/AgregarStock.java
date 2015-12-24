@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -35,6 +36,12 @@ public class AgregarStock extends javax.swing.JInternalFrame {
     public AgregarStock() {
         initComponents();
         
+        SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                      filtro_field.requestFocus();
+                }
+          });
        
     }
 

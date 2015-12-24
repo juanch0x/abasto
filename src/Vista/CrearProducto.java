@@ -197,7 +197,8 @@ public class CrearProducto extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void boton_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_agregarActionPerformed
-
+        ControlProducto e = new ControlProducto();
+     try {   
     //Se valida que no halla ningun campo vacio    
         
     if(preciov_jfield.getText().trim().isEmpty()||precioc_jfield.getText().trim().isEmpty()||nombre_jfield.getText().trim().isEmpty()){
@@ -206,62 +207,76 @@ public class CrearProducto extends javax.swing.JInternalFrame {
        
     //Validación de precio
     
-    if(Float.parseFloat(precioc_jfield.getText())>=Float.parseFloat(preciov_jfield.getText())){
+    else if(Float.parseFloat(precioc_jfield.getText())>=Float.parseFloat(preciov_jfield.getText())){
         JOptionPane.showMessageDialog(this, "El precio de costo debe ser menor al precio de venta.");
+     }
      
+//Validación de Código de Barras repetido//
+        
+               
+    else if(e.validarDatos(Long.parseLong(codigo_jfield.getText()))){
+                JOptionPane.showMessageDialog(this, "Ya existe un producto con el mismo codigo de barras!");
     }
+//Validación de Nombre repetido//
     
-    //Empieza la ejecución normal
+    else if(e.validarDatos(nombre_jfield.getText())){
+         JOptionPane.showMessageDialog(this, "Ya existe un producto con el mismo nombre!");
+     }
     
-               else{
-        
-       Producto p = new Producto();
-       
-      p.setNombre(nombre_jfield.getText());
-      p.setPrecio_c(Float.parseFloat(precioc_jfield.getText()));
-      p.setPrecio_v(Float.parseFloat(preciov_jfield.getText()));
-      
-       
-      if(codigo_jfield.getText().equals("")){
-          p.setCodigo(0);
-      }else{
-      
-          p.setCodigo(Long.parseLong(codigo_jfield.getText()));
-          
-      }    
-      
-    // Busco el id categoría y lo seteo al objeto
-        
-        Categoria categoria= new Categoria();
-        ControlCategoria c = new ControlCategoria();
-              
-        
-        try {
-            categoria=c.busqueda(String.valueOf(categoria_combo.getSelectedItem()));
-            // a.setCategoria(String.valueOf(categoria_combo.getSelectedItem()));
+            //Empieza la ejecución normal
+            
+            else{
+                
+                Producto p = new Producto();
+                
+                p.setNombre(nombre_jfield.getText());
+                p.setPrecio_c(Float.parseFloat(precioc_jfield.getText()));
+                p.setPrecio_v(Float.parseFloat(preciov_jfield.getText()));
+                
+                
+                if(codigo_jfield.getText().equals("")){
+                    p.setCodigo(0);
+                }else{
+                    
+                    p.setCodigo(Long.parseLong(codigo_jfield.getText()));
+                    
+                }
+                
+                // Busco el id categoría y lo seteo al objeto
+                
+                Categoria categoria= new Categoria();
+                ControlCategoria c = new ControlCategoria();
+                
+                
+                try {
+                    categoria=c.busqueda(String.valueOf(categoria_combo.getSelectedItem()));
+                    // a.setCategoria(String.valueOf(categoria_combo.getSelectedItem()));
+                } catch (SQLException ex) {
+                    Logger.getLogger(CrearProducto.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                
+                p.setId_categoria(categoria.getId_categoria());
+                
+                
+                try {
+                    e.CrearProducto(p);
+                } catch (SQLException ex) {
+                    Logger.getLogger(CrearProducto.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                //Vaciando los campos después de agregar el producto
+                
+                nombre_jfield.setText("");
+                precioc_jfield.setText("");
+                preciov_jfield.setText("");
+                codigo_jfield.setText("");
+                
+                JOptionPane.showMessageDialog(this, "El producto fue creado correctamente..");
+                
+            }
         } catch (SQLException ex) {
             Logger.getLogger(CrearProducto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        p.setId_categoria(categoria.getId_categoria());
-        
-       ControlProducto e = new ControlProducto();
-        try {
-            e.CrearProducto(p);
-        } catch (SQLException ex) {
-            Logger.getLogger(CrearProducto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //Vaciando los campos después de agregar el producto
-        
-        nombre_jfield.setText("");
-        precioc_jfield.setText("");
-        preciov_jfield.setText("");
-        codigo_jfield.setText("");
-        
-        JOptionPane.showMessageDialog(this, "El producto fue creado correctamente..");
-       
         }
       
     

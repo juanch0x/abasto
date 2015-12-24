@@ -7,14 +7,25 @@ Prueba de como funciona git
 package Vista;
 
 import Control.Conexion;
+import Control.ControlProducto;
+import Modelo.Producto;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
+import javax.swing.KeyStroke;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -25,6 +36,7 @@ import net.sf.jasperreports.view.JasperViewer;
 /**
  *
  * @author juanch0x
+ * 
  */
 public class principal extends javax.swing.JFrame {
     categorias categoria;
@@ -43,6 +55,20 @@ public class principal extends javax.swing.JFrame {
               
         initComponents();
         popup_cantidad_stock.setLocationRelativeTo(this);
+        buscar_precio.setLocationRelativeTo(this);
+        
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().
+                addKeyEventDispatcher(new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                if (e.getID() == java.awt.event.KeyEvent.KEY_RELEASED &&
+                        e.getKeyCode() == java.awt.event.KeyEvent.VK_F2) {
+                    funcionf2();
+                }
+                
+                return false;
+            }
+        });
         
         
     }
@@ -62,6 +88,14 @@ public class principal extends javax.swing.JFrame {
         stock_field = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         boton_stock = new javax.swing.JButton();
+        buscar_precio = new javax.swing.JDialog();
+        jLabel3 = new javax.swing.JLabel();
+        codigo_barras_precio_field = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        boton_buscar_dialogo_f2 = new javax.swing.JButton();
+        nombre_producto_busqueda_label = new javax.swing.JLabel();
+        precio_producto_busqueda_label = new javax.swing.JLabel();
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu6 = new javax.swing.JMenu();
@@ -125,6 +159,77 @@ public class principal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(boton_stock)))
                 .addGap(31, 31, 31))
+        );
+
+        addEscapeListenerWindowDialog(buscar_precio);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setText("Codigo de Barras");
+
+        codigo_barras_precio_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                codigo_barras_precio_fieldKeyTyped(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Producto:");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel5.setText("Precio:");
+
+        boton_buscar_dialogo_f2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/1450422891_Search.png"))); // NOI18N
+        boton_buscar_dialogo_f2.setText("Buscar");
+        boton_buscar_dialogo_f2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boton_buscar_dialogo_f2ActionPerformed(evt);
+            }
+        });
+
+        nombre_producto_busqueda_label.setText("jLabel6");
+
+        precio_producto_busqueda_label.setText("jLabel6");
+
+        javax.swing.GroupLayout buscar_precioLayout = new javax.swing.GroupLayout(buscar_precio.getContentPane());
+        buscar_precio.getContentPane().setLayout(buscar_precioLayout);
+        buscar_precioLayout.setHorizontalGroup(
+            buscar_precioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buscar_precioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(buscar_precioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(buscar_precioLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(codigo_barras_precio_field, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(boton_buscar_dialogo_f2))
+                    .addGroup(buscar_precioLayout.createSequentialGroup()
+                        .addGroup(buscar_precioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(28, 28, 28)
+                        .addGroup(buscar_precioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(precio_producto_busqueda_label)
+                            .addComponent(nombre_producto_busqueda_label))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        buscar_precioLayout.setVerticalGroup(
+            buscar_precioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buscar_precioLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(buscar_precioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(codigo_barras_precio_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boton_buscar_dialogo_f2))
+                .addGap(32, 32, 32)
+                .addGroup(buscar_precioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(nombre_producto_busqueda_label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(buscar_precioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(precio_producto_busqueda_label))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -254,7 +359,7 @@ public class principal extends javax.swing.JFrame {
 
     private void menu_item_categoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_categoriaActionPerformed
         // TODO add your handling code here:
-        if(checkInternalFrame(venta)==true){
+        if(checkInternalFrame(categoria)==true){
         
         categoria = new categorias();
         
@@ -269,9 +374,9 @@ public class principal extends javax.swing.JFrame {
             Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
         }}else{
           
-          crearproducto.moveToFront();
+          categoria.moveToFront();
           try {
-              crearproducto.setSelected(true);
+              categoria.setSelected(true);
           } catch (PropertyVetoException ex) {
               Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
           }
@@ -279,7 +384,7 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_menu_item_categoriaActionPerformed
 
     private void menu_item_crearproductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_crearproductoActionPerformed
-          if(checkInternalFrame(venta)==true){
+          if(checkInternalFrame(crearproducto)==true){
 
         try {
             crearproducto = new CrearProducto();
@@ -309,7 +414,7 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_menu_item_crearproductoActionPerformed
 
     private void menu_item_vencimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_vencimientoActionPerformed
-          if(checkInternalFrame(venta)==true){
+          if(checkInternalFrame(vencimientos)==true){
 
          vencimientos = new Vencimientos();
          this.getContentPane().add(escritorio);
@@ -335,7 +440,7 @@ public class principal extends javax.swing.JFrame {
 
     private void menu_item_agregarstockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_agregarstockActionPerformed
 
-              if(checkInternalFrame(venta)==true){
+              if(checkInternalFrame(agregarstock)==true){
 
         agregarstock = new AgregarStock();
         
@@ -363,6 +468,7 @@ public class principal extends javax.swing.JFrame {
 
     private void menu_item_ventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_ventaActionPerformed
 
+        //System.out.println(venta.isVisible());
   
       if(checkInternalFrame(venta)==true){
           venta = new Venta();
@@ -482,6 +588,35 @@ parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
                    jasper.requestFocus();
     }//GEN-LAST:event_boton_stockActionPerformed
 
+    private void boton_buscar_dialogo_f2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_buscar_dialogo_f2ActionPerformed
+
+        ControlProducto c = new ControlProducto();
+        Producto producto = new Producto();
+        
+        try {
+            producto = c.busqueda(Long.parseLong(codigo_barras_precio_field.getText()));
+        } catch (SQLException ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+             
+        nombre_producto_busqueda_label.setText(producto.getNombre());
+        precio_producto_busqueda_label.setText("$ " + String.valueOf(producto.getPrecio_v()));
+        nombre_producto_busqueda_label.setVisible(true);
+        precio_producto_busqueda_label.setVisible(true);
+    }//GEN-LAST:event_boton_buscar_dialogo_f2ActionPerformed
+
+    private void codigo_barras_precio_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo_barras_precio_fieldKeyTyped
+
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            boton_buscar_dialogo_f2ActionPerformed(null);
+            
+        }
+        
+    }//GEN-LAST:event_codigo_barras_precio_fieldKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -518,10 +653,16 @@ parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton boton_buscar_dialogo_f2;
     private javax.swing.JButton boton_stock;
+    private javax.swing.JDialog buscar_precio;
+    private javax.swing.JTextField codigo_barras_precio_field;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -538,7 +679,9 @@ parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
     private javax.swing.JMenuItem menu_item_crearproducto;
     private javax.swing.JMenuItem menu_item_vencimiento;
     private javax.swing.JMenuItem menu_item_venta;
+    private javax.swing.JLabel nombre_producto_busqueda_label;
     private javax.swing.JDialog popup_cantidad_stock;
+    private javax.swing.JLabel precio_producto_busqueda_label;
     private javax.swing.JTextField stock_field;
     // End of variables declaration//GEN-END:variables
 
@@ -557,9 +700,32 @@ parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
                 i++;
                        
         }
-        
+        //System.out.println(cerrado);
         return cerrado;
        
     }
+      
+private void funcionf2(){
+
+        nombre_producto_busqueda_label.setVisible(false);
+        precio_producto_busqueda_label.setVisible(false);
+        
+        buscar_precio.pack();
+        buscar_precio.setSize(330,171);
+        buscar_precio.setModal(rootPaneCheckingEnabled);
+        buscar_precio.setVisible(true);
+                   
+    
+}
+
+public static void addEscapeListenerWindowDialog( final JDialog windowDialog) {ActionListener escAction = new ActionListener() {
+@Override
+public void actionPerformed(ActionEvent e) {
+windowDialog.dispose();
+}
+};
+windowDialog.getRootPane().registerKeyboardAction(escAction,
+KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+JComponent.WHEN_IN_FOCUSED_WINDOW);}
 
 }

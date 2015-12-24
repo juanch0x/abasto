@@ -11,6 +11,8 @@ import Control.ControlVenta;
 import Modelo.Detalle;
 import Modelo.Producto;
 import java.awt.Component;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -66,9 +68,7 @@ public class Venta extends javax.swing.JInternalFrame {
                 }
           });
         
-      
-
-        
+             
         
    }
 

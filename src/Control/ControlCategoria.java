@@ -126,5 +126,15 @@ public void modificarCategoria(Categoria categoria) throws SQLException{
     
 }
     
-       
+public void eliminarCategoria(int id)  throws SQLException{
+    
+    Conexion e = new Conexion();
+    conn = e.conectado();
+    
+    String query = "DELETE FROM categoria WHERE id_categoria=?";
+    ps = conn.prepareStatement(query);
+    ps.setInt(1,id);
+    ps.executeUpdate();
+}
+
 }
