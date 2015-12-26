@@ -408,34 +408,66 @@ public class ModificarProducto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_codigo_jfieldKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        Producto producto = new Producto();
-        Categoria categoria = new Categoria();
-        ControlCategoria controlc = new ControlCategoria();
-        ControlProducto controlp = new ControlProducto();
+ ControlProducto controlp = new ControlProducto();
+         
+    //Se valida que no halla ningun campo vacio    
         
-        producto.setCodigo(Long.parseLong(codigo_jfield.getText()));
-        producto.setNombre(nombre_jfield.getText());
-        producto.setPrecio_c(Float.parseFloat(precioc_jfield.getText()));
-        producto.setPrecio_v(Float.parseFloat(preciov_jfield.getText()));
+    if(preciov_jfield.getText().trim().isEmpty()||precioc_jfield.getText().trim().isEmpty()||nombre_jfield.getText().trim().isEmpty()){
+               JOptionPane.showMessageDialog(this, "Hay algun campo vacio.");
+     }
+       
+    //Validación de precio
+    
+    else if(Float.parseFloat(precioc_jfield.getText())>=Float.parseFloat(preciov_jfield.getText())){
+        JOptionPane.showMessageDialog(this, "El precio de costo debe ser menor al precio de venta.");
+     }
+     
+//Validación de Código de Barras repetido//
         
-        try {
-            categoria = controlc.busqueda(categoria_combo.getSelectedItem().toString());
+               
+   else try {
         
-        producto.setId_categoria(categoria.getId_categoria());
+//Validación de Nombre repetido//
         
-        controlp.ModificarProducto(producto);
-        } catch (SQLException ex) {
-            Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
+         if(controlp.validarDatos(nombre_jfield.getText())){
+            JOptionPane.showMessageDialog(this, "Ya existe un producto con el mismo nombre!");
         }
-        ventana_Modificar.dispose();
         
-        DefaultTableModel modelo = new DefaultTableModel();
+        //Empieza la ejecución normal
         
-        modelo = obtenerProductos();
-        
-        tabla.setModel(modelo);
-        
+        else{
+            
+            
+            Producto producto = new Producto();
+            Categoria categoria = new Categoria();
+            ControlCategoria controlc = new ControlCategoria();
+            
+            
+            producto.setCodigo(Long.parseLong(codigo_jfield.getText()));
+            producto.setNombre(nombre_jfield.getText());
+            producto.setPrecio_c(Float.parseFloat(precioc_jfield.getText()));
+            producto.setPrecio_v(Float.parseFloat(preciov_jfield.getText()));
+            
+            try {
+                categoria = controlc.busqueda(categoria_combo.getSelectedItem().toString());
+                
+                producto.setId_categoria(categoria.getId_categoria());
+                
+                controlp.ModificarProducto(producto);
+            } catch (SQLException ex) {
+                Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ventana_Modificar.dispose();
+            
+            DefaultTableModel modelo = new DefaultTableModel();
+            
+            modelo = obtenerProductos();
+            
+            tabla.setModel(modelo);
+        }
+ } catch (SQLException ex) {
+     Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
+ }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
