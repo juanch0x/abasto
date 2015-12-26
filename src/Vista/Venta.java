@@ -650,7 +650,7 @@ private void setTabla() {
                       
                         }
                     }
-                    JOptionPane.showMessageDialog(null, "Seleccionada la fila " + fila + sb.toString());
+                    //JOptionPane.showMessageDialog(null, "Seleccionada la fila " + fila + sb.toString());
                                        
                                 
             

@@ -40,27 +40,6 @@ public class ControlProducto {
              
 }  
 
-          public void ModificarProducto(Producto producto) throws ClassNotFoundException{
-    
-        try{
-            
-            Conexion e=new Conexion();
-            conn = e.conectado();
-            
-            String query="UPDATE producto SET codigo=?, nombre=?, precio=?, cantidad=?, id_categoria=?  WHERE codigo=?";
-            ps = conn.prepareStatement(query);
-            ps.setLong(1, producto.getCodigo() );
-            ps.setString(2, producto.getNombre());
-          //  ps.setFloat(3, producto.getPrecio());
-            ps.setInt(4, producto.getCantidad());
-            ps.setInt(5, producto.getId_categoria());
-            ps.executeUpdate();
-            
-        }catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
 public void EliminarProducto(Long codigo) throws SQLException{
     
     try{
@@ -258,7 +237,7 @@ public Producto busqueda(Long codigo) throws SQLException{
           
           conn = e.conectado();
           
-           String query="SELECT precio,nombre FROM producto WHERE codigo = ?";
+           String query="SELECT * FROM producto WHERE codigo = ?";
             ps = conn.prepareStatement(query);
             ps.setLong(1, codigo);
             rs = ps.executeQuery();
@@ -266,10 +245,32 @@ public Producto busqueda(Long codigo) throws SQLException{
             while(rs.next()){
             c.setNombre(rs.getString("nombre"));
             c.setPrecio_v(Float.parseFloat(rs.getString("precio")));
+            c.setPrecio_c(Float.parseFloat(rs.getString("precio_compra")));
+            c.setId_categoria(Integer.parseInt(rs.getString("id_categoria")));
+            c.setCodigo(Long.parseLong(rs.getString("codigo")));
             }
           
           return c;
       }
+
+public void ModificarProducto(Producto producto) throws SQLException{
+
+Conexion e = new Conexion();
+
+e.conectado();
+
+String query = "UPDATE producto SET nombre=?,precio=?,id_categoria=?,precio_compra=? WHERE codigo=?";
+
+    ps = conn.prepareStatement(query);
+    ps.setString(1, producto.getNombre());
+    ps.setFloat(2, producto.getPrecio_v());
+    ps.setInt(3, producto.getId_categoria());
+    ps.setFloat(4, producto.getPrecio_c());
+    ps.setLong(5, producto.getCodigo());
+    
+    ps.executeUpdate();
+    
+}
 
 } 
           

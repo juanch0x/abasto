@@ -40,6 +40,7 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class principal extends javax.swing.JFrame {
     categorias categoria;
+    ModificarProducto modificarproducto;
     CrearProducto crearproducto;
     AgregarStock agregarstock;
     Venta venta;
@@ -101,6 +102,7 @@ public class principal extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         menu_item_crearproducto = new javax.swing.JMenuItem();
         menu_item_agregarstock = new javax.swing.JMenuItem();
+        editar_producto = new javax.swing.JMenuItem();
         menu_item_venta = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         menu_item_categoria = new javax.swing.JMenuItem();
@@ -270,6 +272,14 @@ public class principal extends javax.swing.JFrame {
             }
         });
         jMenu6.add(menu_item_agregarstock);
+
+        editar_producto.setText("Editar Producto");
+        editar_producto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editar_productoActionPerformed(evt);
+            }
+        });
+        jMenu6.add(editar_producto);
 
         menu_item_venta.setText("Venta");
         menu_item_venta.addActionListener(new java.awt.event.ActionListener() {
@@ -617,6 +627,37 @@ parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
         
     }//GEN-LAST:event_codigo_barras_precio_fieldKeyTyped
 
+    private void editar_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editar_productoActionPerformed
+        
+ if(checkInternalFrame(modificarproducto)==true){
+     try {
+         modificarproducto = new ModificarProducto();
+     } catch (ClassNotFoundException ex) {
+         Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+     }
+           this.getContentPane().add(escritorio);
+           
+           modificarproducto.setVisible(true);
+           escritorio.add(modificarproducto);
+           modificarproducto.moveToFront(); 
+        try { 
+            modificarproducto.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      }
+      else{
+          
+          modificarproducto.moveToFront();
+          try {
+              modificarproducto.setSelected(true);
+          } catch (PropertyVetoException ex) {
+              Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+          }
+            }        
+        
+    }//GEN-LAST:event_editar_productoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -657,6 +698,7 @@ parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
     private javax.swing.JButton boton_stock;
     private javax.swing.JDialog buscar_precio;
     private javax.swing.JTextField codigo_barras_precio_field;
+    private javax.swing.JMenuItem editar_producto;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -137,4 +137,23 @@ public void eliminarCategoria(int id)  throws SQLException{
     ps.executeUpdate();
 }
 
+public Categoria busqueda(int id) throws SQLException{
+    
+    Categoria categoria = new Categoria();
+    categoria.setId_categoria(id);
+    Conexion e = new Conexion();
+    conn = e.conectado();
+    
+    String query = "SELECT categoria FROM categoria WHERE id_categoria=?";
+    ps = conn.prepareStatement(query);
+    ps.setInt(1, id);
+    rs = ps.executeQuery();
+    while(rs.next()){
+    categoria.setCategoria(rs.getString("categoria"));
+    }
+    
+    
+return categoria;
+}
+
 }
