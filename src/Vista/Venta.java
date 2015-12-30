@@ -59,6 +59,7 @@ public class Venta extends javax.swing.JInternalFrame {
         robodecodigo = new AgregarStock();
         total = 0.0;
         variable =0;
+        ventana.setLocationRelativeTo(this);
         
         
        SwingUtilities.invokeLater(new Runnable() {
@@ -181,6 +182,11 @@ public class Venta extends javax.swing.JInternalFrame {
         cantidad_label.setText("Cantidad");
 
         cantidad_field.setText("1");
+        cantidad_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cantidad_fieldKeyTyped(evt);
+            }
+        });
 
         producto_label.setText("Producto");
 
@@ -357,44 +363,66 @@ public class Venta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel(); 
+if(codigo_field.getText().trim().isEmpty()){
+        JOptionPane.showMessageDialog(this, "El codigo de barras está vacio!.");
+     }else{
+    try { 
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         
         Float precio;
+        ControlProducto e = new ControlProducto();
+        Producto producto = new Producto();
+        ControlVenta controlventa = new ControlVenta();
         
         
+        producto = controlventa.BuscarPorCodigo(Long.parseLong(codigo_field.getText()));
         
-        precio = Float.parseFloat(precio_field.getText());
-        
-        if(Integer.parseInt(cantidad_field.getText())!=1){
-        precio = precio * Integer.parseInt(cantidad_field.getText());
-        }
-        
-        Object[] a = new Object[]{codigo_field.getText(),producto_field.getText(), cantidad_field.getText(), precio, new JButton(imagen)};
-        
-         
-         
-        modelo.addRow(a);
-        tabla.setModel(modelo);
     
-        
-        
-        total = 0.0;
-        
-        for(int i=0; i<tabla.getRowCount();i++){
-            
-            total = total + Double.parseDouble(tabla.getValueAt(i, 3).toString());
-            
-            
-        }
-            total_field.setText(String.valueOf(total));
-            
+        if(!e.validarDatos(Long.parseLong(codigo_field.getText()))){
+            JOptionPane.showMessageDialog(this, "No existe ningun producto con ese codigo de barras!");
+        }else{
+            if(producto.getCantidad()<1){
+                JOptionPane.showMessageDialog(this, "No hay stock de "+producto.getNombre());
+            }else{
+                
+                
+                precio = Float.parseFloat(precio_field.getText());
+                
+                if(Integer.parseInt(cantidad_field.getText())!=1){
+                    precio = precio * Integer.parseInt(cantidad_field.getText());
+                }
+                
+                Object[] a = new Object[]{codigo_field.getText(),producto_field.getText(), cantidad_field.getText(), precio, new JButton(imagen)};
+                
+                
+                
+                modelo.addRow(a);
+                tabla.setModel(modelo);
+                
+                
+                
+                total = 0.0;
+                
+                for(int i=0; i<tabla.getRowCount();i++){
+                    
+                    total = total + Double.parseDouble(tabla.getValueAt(i, 3).toString());
+                    
+                    
+                }
+                total_field.setText(String.valueOf(total));
+                
+                
+            }
+        }    
         codigo_field.setText("");
         cantidad_field.setText("1");
         precio_field.setText("");
         producto_field.setText("");
+    } catch (SQLException ex) {
+        Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
+    }
         
-        
+}
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -406,15 +434,19 @@ public class Venta extends javax.swing.JInternalFrame {
         
         producto = (String) tabla_productos.getValueAt(tabla_productos.getSelectedRow(), 0);
         
-        producto_field.setText(producto);
+        
         
                     try {
                         p = a.busqueda(producto);
                     } catch (SQLException ex) {
                         Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
-                   
+System.out.println(p.getCantidad());
+                    if(p.getCantidad()<1){
+                        JOptionPane.showMessageDialog(this, "No tiene stock de " + producto);   
+                    }else{
+                    
+        producto_field.setText(producto);           
                     
         codigo_field.setText(String.valueOf(p.getCodigo()));
         precio_field.setText(String.valueOf(p.getPrecio_v()));
@@ -424,11 +456,27 @@ public class Venta extends javax.swing.JInternalFrame {
         variable = 1;
         cantidad_field.setText("1");
         cantidad_field.requestFocus();
-
+                    }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void codigo_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo_fieldKeyTyped
 
+        
+        char caracter = evt.getKeyChar();
+                if(((caracter < '0') || (caracter > '9')) && (caracter != KeyEvent.VK_BACK_SPACE)){
+ 
+                
+                evt.consume();
+                }
+        char e = evt.getKeyChar();
+        
+        if(e == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+   
+        
+        }
+                     
+        
         char c = evt.getKeyChar();
         
         if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
@@ -446,11 +494,14 @@ public class Venta extends javax.swing.JInternalFrame {
         }
         
         
+        
     }//GEN-LAST:event_codigo_fieldKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        
+         if(tabla.getRowCount()<1){
+                JOptionPane.showMessageDialog(this, "No hay ningun producto en el detalle!");
+    }else{
         
         Modelo.Venta venta = new Modelo.Venta();
         List <Detalle> detalle = new ArrayList<Detalle>();
@@ -491,7 +542,7 @@ public class Venta extends javax.swing.JInternalFrame {
         producto_field.setText("");
         total_field.setText("");
         setTabla();
-        
+         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void reportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesActionPerformed
@@ -524,6 +575,24 @@ path= path+"\\src\\Reportes\\factura.jrxml";
                    
 
     }//GEN-LAST:event_reportesActionPerformed
+
+    private void cantidad_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cantidad_fieldKeyTyped
+
+        char caracter = evt.getKeyChar();
+                if(((caracter < '0') || (caracter > '9')) && (caracter != KeyEvent.VK_BACK_SPACE)){
+ 
+                
+                evt.consume();
+                }
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            codigo_field.requestFocus();
+        
+        }
+                     
+    }//GEN-LAST:event_cantidad_fieldKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -699,15 +768,27 @@ public DefaultTableModel obtenerProductos() {
     }
 
 public void AgregarPorCodigo() throws SQLException{
-
+if(codigo_field.getText().trim().isEmpty()){
+        JOptionPane.showMessageDialog(this, "El codigo de barras está vacio!.");
+     }else{
 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel(); 
     
 ControlVenta controlventa = new ControlVenta();
 Producto producto = new Producto();
-
+ControlProducto e = new ControlProducto();
 producto = controlventa.BuscarPorCodigo(Long.parseLong(codigo_field.getText()));
 
-if(Integer.parseInt(cantidad_field.getText())!=1){
+
+        
+ if(!e.validarDatos(Long.parseLong(codigo_field.getText()))){
+                JOptionPane.showMessageDialog(this, "No existe ningun producto con ese codigo de barras!");
+    }
+
+else if(producto.getCantidad()<1){
+    
+ JOptionPane.showMessageDialog(this, "No tiene stock de " + producto.getNombre());   
+}else {
+    if(Integer.parseInt(cantidad_field.getText())!=1){
         producto.setPrecio_v(producto.getPrecio_v() * Integer.parseInt(cantidad_field.getText()));
         }
 
@@ -735,12 +816,10 @@ cantidad_field.setText("1");
         }
             total_field.setText(String.valueOf(total));
 
-}
+}}}
+}  
 
 
-    
-
-}
 
 
 

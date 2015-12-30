@@ -106,6 +106,7 @@ public Producto BuscarPorCodigo(Long codigo) throws SQLException{
             while(rs.next()){
             c.setNombre(rs.getString("nombre"));
             c.setPrecio_v(Float.parseFloat(rs.getString("precio")));
+            c.setCantidad(Integer.parseInt(rs.getString("cantidad")));
             }
           
           return c;

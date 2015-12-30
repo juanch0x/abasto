@@ -10,7 +10,6 @@ import Modelo.Producto;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -216,7 +215,16 @@ public class AgregarStock extends javax.swing.JInternalFrame {
  
          }else {
 
-             
+             //Valido campos vacios..
+           if(stock_field.getText().trim().isEmpty()||lote_field.getText().trim().isEmpty()){
+           JOptionPane.showMessageDialog(this, "Hay algun campo vacio");
+           }
+           if(fecha.getDate() == null){
+           JOptionPane.showMessageDialog(this, "Es obligatorio definir la fecha de vencimiento");
+           }
+           else{
+              
+              
            //Sección 4
             int confirmar=JOptionPane.showConfirmDialog(null, 
            "¿Esta seguro de agregar este lote?"); 
@@ -233,15 +241,8 @@ public class AgregarStock extends javax.swing.JInternalFrame {
           java.util.Date fechaActual = new Date();
            
           
-          //Valido campos vacios..
-           if(stock_field.getText().trim().isEmpty()||lote_field.getText().trim().isEmpty()){
-           JOptionPane.showMessageDialog(this, "Hay algun campo vacio");
-           }
-           if(fecha.getDate() == null){
-           JOptionPane.showMessageDialog(this, "Es obligatorio definir la fecha de vencimiento");
-           }
           
-           else{
+          
             
            //Convierto la fecha del jcalendar en un objeto date    
            fechaVto = fecha.getDate();
@@ -275,9 +276,14 @@ public class AgregarStock extends javax.swing.JInternalFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(AgregarStock.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
+                   JOptionPane.showMessageDialog(null, 
+                "El lote se agregó correctamente" );
  
- 
-           
+           filtro_field.setText("");
+           stock_field.setText("");
+           lote_field.setText("");
+           fecha.setDate(null);
  
  }}}
  

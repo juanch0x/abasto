@@ -125,7 +125,16 @@ public void EliminarLote(Long codigo) throws SQLException{
 
 }
  
+ public void EliminarRegistroLote() throws SQLException{
  
+     Conexion e = new Conexion();
+     conn = e.conectado();
+     
+     String eliminar = "DELETE FROM `lote` WHERE vencimiento<=CURRENT_DATE";
+     ps = conn.prepareStatement(eliminar);
+     ps.executeUpdate();
+ 
+ } 
  
  
  

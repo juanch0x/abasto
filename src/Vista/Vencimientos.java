@@ -5,12 +5,17 @@
 package Vista;
 //import modelo.*;
 //import control.*;
+import Control.ControlLote;
+import Modelo.Lote;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -40,11 +45,22 @@ public class Vencimientos extends javax.swing.JInternalFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        Eliminar = new javax.swing.JButton();
 
         setClosable(true);
+        setTitle("Vencimientos");
+        setToolTipText("");
 
         jTable1.setModel(buscarlotes());
         jScrollPane2.setViewportView(jTable1);
+
+        Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/delete.png"))); // NOI18N
+        Eliminar.setText("Eliminar Registros Vencidos");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -52,20 +68,42 @@ public class Vencimientos extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(133, 133, 133)
+                        .addComponent(Eliminar)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Eliminar)
+                .addGap(21, 21, 21))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+
+       ControlLote control = new ControlLote();
+       
+       
+        try {
+            control.EliminarRegistroLote();
+        } catch (SQLException ex) {
+            Logger.getLogger(Vencimientos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       jTable1.setModel(buscarlotes());
+    }//GEN-LAST:event_EliminarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Eliminar;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
@@ -97,10 +135,15 @@ public DefaultTableModel buscarlotes() {
             data[i][1] = Long.toString(lotes.get(i).getCodigo());
             data[i][2] = lotes.get(i).getLote();
             data[i][3] = lotes.get(i).getVencimiento().toString();
+            if(dias<1)
+            data[i][4] = ("Vencido");
+            else{
             data[i][4] = Long.toString(dias);
-            
+            }
 
         }
+
+        jTable1.setDefaultRenderer (Object.class, new MiRender());
         
         return new DefaultTableModel(data,encabezados);
     }
@@ -120,4 +163,32 @@ public class FormatoTablaUsuarios extends DefaultTableCellRenderer
  }
  }
 
+public class MiRender extends DefaultTableCellRenderer
+{
+   public Component getTableCellRendererComponent(JTable table,
+      Object value,
+      boolean isSelected,
+      boolean hasFocus,
+      int row,
+      int column)
+   {
+      
+      super.getTableCellRendererComponent (table, value, isSelected, hasFocus, row, column);
+      if ( table.getValueAt(row, 4).toString().equals("Vencido") )
+      {
+         this.setOpaque(true);
+         this.setBackground(Color.WHITE);
+         this.setForeground(Color.red);
+         
+      }       
+      else {
+         this.setBackground(Color.WHITE);
+         this.setForeground(Color.BLACK);
+      }
+
+      return this;
+   }
 }
+
+}
+

@@ -22,9 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -70,6 +72,10 @@ public class principal extends javax.swing.JFrame {
                 return false;
             }
         });
+        
+       
+       ImageIcon img = new ImageIcon(new File("").getAbsolutePath()+"\\src\\Images\\orange-icon.png");
+       this.setIconImage(img.getImage());
         
         
     }
@@ -123,6 +129,12 @@ public class principal extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Ingrese la cantidad de stock mínima");
+
+        stock_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                stock_fieldKeyTyped(evt);
+            }
+        });
 
         boton_stock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/print.png"))); // NOI18N
         boton_stock.addActionListener(new java.awt.event.ActionListener() {
@@ -248,7 +260,7 @@ public class principal extends javax.swing.JFrame {
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 829, Short.MAX_VALUE)
+            .addGap(0, 954, Short.MAX_VALUE)
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,7 +359,9 @@ public class principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,6 +569,10 @@ System.out.println(path);
 
     private void boton_stockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_stockActionPerformed
 
+    if(stock_field.getText().trim().isEmpty()){
+        JOptionPane.showMessageDialog(this, "El campo es obligatorio!.");
+    }else{    
+        
         Conexion e = new Conexion();
 
 conn = e.conectado();
@@ -596,10 +614,16 @@ parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
                     
                    popup_cantidad_stock.dispose();
                    jasper.requestFocus();
+                   stock_field.setText("");
+    }
     }//GEN-LAST:event_boton_stockActionPerformed
 
     private void boton_buscar_dialogo_f2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_buscar_dialogo_f2ActionPerformed
 
+        if(codigo_barras_precio_field.getText().trim().isEmpty()){
+               JOptionPane.showMessageDialog(null, "El campo esta vacio!", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+     }else{
+        
         ControlProducto c = new ControlProducto();
         Producto producto = new Producto();
         
@@ -613,12 +637,20 @@ parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
         precio_producto_busqueda_label.setText("$ " + String.valueOf(producto.getPrecio_v()));
         nombre_producto_busqueda_label.setVisible(true);
         precio_producto_busqueda_label.setVisible(true);
+        }
+        codigo_barras_precio_field.setText("");
     }//GEN-LAST:event_boton_buscar_dialogo_f2ActionPerformed
 
     private void codigo_barras_precio_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo_barras_precio_fieldKeyTyped
-
+char caracter = evt.getKeyChar();
+                if(((caracter < '0') || (caracter > '9')) && (caracter != KeyEvent.VK_BACK_SPACE)){
+ 
+                
+                evt.consume();
+                }
         char c = evt.getKeyChar();
         
+            
         if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
         
             boton_buscar_dialogo_f2ActionPerformed(null);
@@ -657,6 +689,22 @@ parametros.put("stock_minimo", Integer.parseInt(stock_field.getText()));
             }        
         
     }//GEN-LAST:event_editar_productoActionPerformed
+
+    private void stock_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stock_fieldKeyTyped
+char caracter = evt.getKeyChar();
+                if(((caracter < '0') || (caracter > '9')) && (caracter != KeyEvent.VK_BACK_SPACE)){
+ 
+                
+                evt.consume();
+                }
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            boton_stockActionPerformed(null);
+        
+        }
+    }//GEN-LAST:event_stock_fieldKeyTyped
 
     /**
      * @param args the command line arguments

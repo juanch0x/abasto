@@ -35,7 +35,7 @@ public class categorias extends javax.swing.JInternalFrame {
     
     public categorias() {
         initComponents();
-     
+     jButton2.setVisible(false);
         ventanaAgregar2.setLocationRelativeTo(this);
         ventanaModificar.setLocationRelativeTo(this);
         
@@ -80,6 +80,11 @@ public class categorias extends javax.swing.JInternalFrame {
         categoriaAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoriaAgregarActionPerformed(evt);
+            }
+        });
+        categoriaAgregar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                categoriaAgregarKeyTyped(evt);
             }
         });
 
@@ -132,6 +137,12 @@ public class categorias extends javax.swing.JInternalFrame {
         categoria_actual_dialog.setEnabled(false);
 
         jLabel3.setText("Nuevo Nombre");
+
+        categoria_nueva_dialogo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                categoria_nueva_dialogoKeyTyped(evt);
+            }
+        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/edit.png"))); // NOI18N
         jButton5.setText("Modificar");
@@ -191,6 +202,7 @@ public class categorias extends javax.swing.JInternalFrame {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/delete.png"))); // NOI18N
         jButton2.setText("Eliminar");
+        jButton2.setName(""); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -266,16 +278,16 @@ public class categorias extends javax.swing.JInternalFrame {
                         .addGap(59, 59, 59)
                         .addComponent(ventanaAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(214, 214, 214)
-                        .addComponent(ventanaEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ventanaEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(197, 197, 197)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,7 +303,7 @@ public class categorias extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(ventanaAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ventanaEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -310,7 +322,7 @@ public class categorias extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-       
+        categoriaAgregar.setText("");
         ventanaAgregar2.pack();
         ventanaAgregar2.setSize(195,175);
         ventanaAgregar2.setModal(rootPaneCheckingEnabled);
@@ -327,7 +339,10 @@ public class categorias extends javax.swing.JInternalFrame {
 
         DefaultTableModel model = (DefaultTableModel) tabla.getModel(); 
         
-               
+        if(categoriaAgregar.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Hay algun campo vacio.");   
+        }
+        else{
         ControlCategoria e=new ControlCategoria();
         Categoria nueva=new Categoria();
         
@@ -343,9 +358,8 @@ public class categorias extends javax.swing.JInternalFrame {
         tabla.setModel(model);
         
         ventanaAgregar2.dispose();
-        
-        
-        
+        }      
+       
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -404,7 +418,7 @@ public class categorias extends javax.swing.JInternalFrame {
          }else{
         
         categoria_actual_dialog.setText((String) tabla.getValueAt(tabla.getSelectedRow(), 1));
-
+        categoria_nueva_dialogo.setText("");
         ventanaModificar.pack();
         ventanaModificar.setSize(240,200);
         ventanaModificar.setModal(rootPaneCheckingEnabled);
@@ -416,7 +430,11 @@ public class categorias extends javax.swing.JInternalFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
-        
+            if(categoria_nueva_dialogo.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Hay algun campo vacio.");
+            }
+            else{
+            
         ControlCategoria control = new ControlCategoria();
         Categoria categoria = new Categoria();
         categoria.setCategoria(categoria_nueva_dialogo.getText());
@@ -430,8 +448,32 @@ public class categorias extends javax.swing.JInternalFrame {
         
         tabla.setValueAt(categoria_nueva_dialogo.getText(), tabla.getSelectedRow(), 1);
         ventanaModificar.dispose();
-        
+            }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void categoriaAgregarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_categoriaAgregarKeyTyped
+
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            jButton4ActionPerformed(null);
+        
+        }
+        
+    }//GEN-LAST:event_categoriaAgregarKeyTyped
+
+    private void categoria_nueva_dialogoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_categoria_nueva_dialogoKeyTyped
+
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            jButton5ActionPerformed(null);
+        
+        }
+        
+    }//GEN-LAST:event_categoria_nueva_dialogoKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -182,8 +182,9 @@ public Producto busqueda(String producto) throws SQLException{
             while(rs.next()){
             c.setCodigo(Long.parseLong(rs.getString("codigo")));
             c.setPrecio_v(Float.parseFloat(rs.getString("precio")));
+            c.setCantidad(Integer.parseInt(rs.getString("cantidad")));
             }
-          
+          System.out.println(c.getCantidad());
           return c;
       }
 

@@ -55,7 +55,6 @@ public class CrearProducto extends javax.swing.JInternalFrame {
         codigo_label = new javax.swing.JLabel();
         nombre_jfield = new javax.swing.JTextField();
         codigo_jfield = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         boton_agregar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         preciov_jfield = new javax.swing.JTextField();
@@ -84,8 +83,6 @@ public class CrearProducto extends javax.swing.JInternalFrame {
                 codigo_jfieldKeyTyped(evt);
             }
         });
-
-        jLabel1.setText("Si el producto a agregar no contiene codigo de barras, se deberá dejar en blanco");
 
         boton_agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
         boton_agregar.setText("Agregar ");
@@ -129,26 +126,23 @@ public class CrearProducto extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nombre_label)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4)
-                                    .addComponent(codigo_label))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(codigo_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(preciov_jfield)
-                                        .addComponent(precioc_jfield)
-                                        .addComponent(categoria_combo, 0, 179, Short.MAX_VALUE))
-                                    .addComponent(nombre_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(nombre_label)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(codigo_label))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(codigo_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(preciov_jfield)
+                                .addComponent(precioc_jfield)
+                                .addComponent(categoria_combo, 0, 179, Short.MAX_VALUE))
+                            .addComponent(nombre_jfield, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(157, 157, 157)
                         .addComponent(boton_agregar)))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,9 +167,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(categoria_combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addComponent(boton_agregar)
                 .addContainerGap())
         );
@@ -210,6 +202,10 @@ public class CrearProducto extends javax.swing.JInternalFrame {
     else if(Float.parseFloat(precioc_jfield.getText())>=Float.parseFloat(preciov_jfield.getText())){
         JOptionPane.showMessageDialog(this, "El precio de costo debe ser menor al precio de venta.");
      }
+    
+     else if(codigo_jfield.getText().trim().isEmpty()){
+        JOptionPane.showMessageDialog(this, "El codigo de barras está vacio!.");
+     }
      
 //Validación de Código de Barras repetido//
         
@@ -234,13 +230,11 @@ public class CrearProducto extends javax.swing.JInternalFrame {
                 p.setPrecio_v(Float.parseFloat(preciov_jfield.getText()));
                 
                 
-                if(codigo_jfield.getText().equals("")){
-                    p.setCodigo(0);
-                }else{
+                
                     
                     p.setCodigo(Long.parseLong(codigo_jfield.getText()));
                     
-                }
+                
                 
                 // Busco el id categoría y lo seteo al objeto
                 
@@ -273,6 +267,7 @@ public class CrearProducto extends javax.swing.JInternalFrame {
                 codigo_jfield.setText("");
                 
                 JOptionPane.showMessageDialog(this, "El producto fue creado correctamente..");
+                codigo_jfield.requestFocus();
                 
             }
         } catch (SQLException ex) {
@@ -294,6 +289,13 @@ public class CrearProducto extends javax.swing.JInternalFrame {
  
                 evt.consume();
                 }
+        char c = evt.getKeyChar();
+        
+        if(c == com.sun.glass.events.KeyEvent.VK_ENTER){
+        
+            boton_agregarActionPerformed(null);
+        
+        }  
                 
               
     }//GEN-LAST:event_preciov_jfieldKeyTyped
@@ -361,7 +363,6 @@ public class CrearProducto extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox categoria_combo;
     private javax.swing.JTextField codigo_jfield;
     private javax.swing.JLabel codigo_label;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
